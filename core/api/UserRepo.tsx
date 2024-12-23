@@ -1,7 +1,10 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { Platform } from 'react-native';
+import * as FileSystem from 'expo-file-system';
 
-const BASE_URL = "http://127.0.0.1:8080"
+
+const BASE_URL = "https://hayat-shop.onrender.com"
 const axiosInstance = axios.create({ baseURL: BASE_URL })
 
 export const fetchProfile = createAsyncThunk<any, { userId: string }>(
@@ -46,46 +49,43 @@ export const fetchProducts = createAsyncThunk(
 );
 
 export const updateProfile = createAsyncThunk('updateProfile', async (payload: any) => {
-    console.log("payload.image =>", payload.image);
+    try {
+        // Create FormData
+        const formData = new FormData();
+        const imageURL = payload.image;
 
-    const filename = payload.image;
-    const formData = new FormData();
-    console.log("calledededdfdvdfvdfnvkmdfnvj")
-    let imageUri = payload.image;
-    console.log("calledededdfdvdfvdfnvkmdfnvj")
-    // Check if the image is a local file (not already in Firebase)
-    if (!filename.includes("https://storage.googleapis.com")) {
-        // Append the local image to formData if it's not from Firebase
+        /* try {
+            const fileInfo = await FileSystem.getInfoAsync(imageURL);
+            if (fileInfo.exists) {
+                var imageJSON = {
+                    imageName: payload.userId + "_profile.jpg",
+                    avatar: fileInfo.uri.toString(),
+                    filePath: fileInfo.uri.split('file://')[1]
+                }
+                formData.append('file', JSON.stringify(imageJSON));
+            }
+            console.log("File exists:", fileInfo);
+        } catch (e) {
+            console.log("Error", e);
+        } */
 
-        const filePath = payload.image.split('file://')[1];  // remove 'file://' prefix
-        const fileName = filePath.split('/').pop();  // Extract file name
-        formData.append('file', {
-            uri: `file://${filePath}`, // Prefix the local file path with 'file://'
-            name: fileName,
-            type: 'image/jpeg', // Modify this based on the actual image type
-        } as any);
-    } else {
-        formData.append('file', {
-            uri: filename, // Prefix the local file path with 'file://'
-            name: filename,
-            type: 'image/jpeg', // Modify this based on the actual image type
-        } as any);
+        // Append other user details
+        formData.append('userId', payload.userId); // Required unique_id field
+        if (payload.username) formData.append('username', payload.username);
+        if (payload.dateOfBirth) formData.append('dateOfBirth', payload.dateOfBirth);
+        if (payload.mobileNumber) formData.append('mobileNumber', payload.mobileNumber);
+        if (payload.email) formData.append('email', payload.email);
+
+        // Make API call
+        const response = await axiosInstance.post('/profileUpdate', formData, {
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response.data;
+    } catch (error: any) {
+        console.error('Error updating profile:', error.response?.data || error.message);
+        throw error;
     }
-    console.log("calledededdfdvdfvdfnvkmdfnvj")
-    // Append additional data (email, userId, etc.)
-    formData.append('userId', payload.userId);
-    formData.append('email', payload.email);
-    formData.append('username', "Mohamed Abu Basith S");
-    console.log("DATA = > ", formData.get('file'))
-    // formData.append('mobileNumber', payload.mobileNumber); // Uncomment if needed
-
-    // Send the request to the backend, regardless of whether the image is local or hosted
-    const res = await axiosInstance.post('/profileUpdate', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    });
-
-    console.log("Response =>", res.data);
-    return res.data;
 });

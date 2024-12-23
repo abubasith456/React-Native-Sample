@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, View, Image, Text } from "react-native"
+import FastImage from 'react-native-fast-image';
 
 export const HeaderIcon = ({ headerIconUrl, isBackButtonNeeded, onBackButtonPress }: any) => {
     const isHeaderUrlAvailable = !!headerIconUrl;
@@ -8,13 +9,16 @@ export const HeaderIcon = ({ headerIconUrl, isBackButtonNeeded, onBackButtonPres
             {isBackButtonNeeded ? <Ionicons style={styles.backButton} name="arrow-back" size={25} onPress={onBackButtonPress} /> : <></>}
             <View style={styles.headerinnerView}>
                 {
-                    isHeaderUrlAvailable ? <Image
-                        source={{ uri: headerIconUrl }} // Replace with your image URL
-                        style={styles.headerIcon}
-                    /> : <Image
-                        source={require('../../../assets/favicon.png')}
-                        style={styles.headerIcon}
-                    />
+                    isHeaderUrlAvailable ?
+                        <Image
+                            source={{ uri: headerIconUrl }}
+                            resizeMethod="resize" // Resizes image before rendering
+                            resizeMode="contain"
+                            style={styles.headerIcon}
+                        /> : <Image
+                            source={require('../../../assets/favicon.png')}
+                            style={styles.headerIcon}
+                        />
                 }
             </View>
         </View>

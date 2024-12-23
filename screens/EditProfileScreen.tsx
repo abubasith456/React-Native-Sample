@@ -13,12 +13,12 @@ import * as ImagePicker from 'expo-image-picker';
 import { GlobalStyle } from '../constants/styles';
 import { RootState, useAppDispatch, useAppSelector } from "../core/state_management/store";
 import { updateProfile } from '../core/api/UserRepo';
+import * as FileSystem from 'expo-file-system';
 
 export const EditProfileScreen = ({ route }: any) => {
     const dispatch = useAppDispatch();
     const { data, updateError }
         = useAppSelector((state: RootState) => state.profileApi);
-    const { profileData } = route.params;
     const [name, setName] = useState(data?.username);
     const [email, setEmail] = useState(data?.email || '');
     const [phone, setPhone] = useState(data?.mobileNumber || '');
@@ -44,8 +44,26 @@ export const EditProfileScreen = ({ route }: any) => {
         });
 
         if (!result.canceled) {
-            setProfilePicture(result.assets[0].uri); // Adjusted for new response structure
+            // Move the image to a more permanent location
+            const fileUri = result.assets[0].uri;
+
+            try {
+                const newFileUri = FileSystem.documentDirectory + 'userProfile.jpg';
+                await FileSystem.moveAsync({
+                    from: fileUri,
+                    to: newFileUri
+                });
+                setProfilePicture(newFileUri);
+                console.log("Image moved to:", newFileUri);
+                // You can now upload the file from the new location
+            } catch (error) {
+                console.error("Error moving file:", error);
+            }
         }
+
+        // if (!result.canceled) {
+        //     setProfilePicture(result.assets[0].uri); // Adjusted for new response structure
+        // }
     };
 
     const handleSave = () => {

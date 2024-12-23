@@ -20,7 +20,6 @@ export const HomeScreen = ({ navigation }: any) => {
     const userData = data?.data.user
     const userId = "11"
 
-    console.log(" ERROR ===> " + error);
     console.log(" data ===> " + data);
 
     useEffect(() => {
@@ -29,7 +28,6 @@ export const HomeScreen = ({ navigation }: any) => {
             Alert.alert("Error", errorMessage ? errorMessage : "Something went wrong!");
         }
     }, []);
-
 
     const renderCategoryItem = ({ item }: any) => (
         <View style={styles.categoryItem}>
@@ -67,7 +65,7 @@ export const HomeScreen = ({ navigation }: any) => {
             {/* Header */}
             <HomeHeader
                 profilePicUrl={userData?.profilePic}
-                userName={userData?.email}
+                userName={userData?.username}
                 searchOnPressed={() => {
                     navigation.navigate("Search");
                 }} />
@@ -152,12 +150,13 @@ const styles = StyleSheet.create({
     },
     flatListContainer: {
         justifyContent: 'space-between', // Adds space between rows
-        paddingHorizontal: 10,           // Adjust the space between columns
+        paddingHorizontal: 10,
+        backgroundColor: 'red'         // Adjust the space between columns
     },
     categoryItem: {
         alignItems: 'center',
-        marginRight: 15,
         marginTop: 10,
+        paddingHorizontal: 10,
         justifyContent: 'space-between'
     },
     categoryIcon: {

@@ -26,6 +26,7 @@ export interface Category {
 export interface User {
     _id: string;
     unique_id: number;
+    username: string
     email: string;
     dateOfBirth: string;
     mobileNumber: string;

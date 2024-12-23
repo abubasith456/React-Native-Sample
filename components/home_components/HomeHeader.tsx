@@ -15,6 +15,8 @@ export const HomeHeader = ({ profilePicUrl, userName, searchOnPressed }: any) =>
                 {
                     isProfilePicUrlAvailable ? <Image
                         source={{ uri: profilePicUrl }}
+                        resizeMethod="resize" // Resizes image before rendering
+                        resizeMode="contain"
                         style={styles.headerIcon}
                     /> : <Image
                         source={require('../../assets/favicon.png')}
