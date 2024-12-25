@@ -7,6 +7,48 @@ import * as FileSystem from 'expo-file-system';
 const BASE_URL = "https://hayat-shop.onrender.com"
 const axiosInstance = axios.create({ baseURL: BASE_URL })
 
+export const login = createAsyncThunk<any, { emailData: string, passwordData: string, googleToken: string | null }>(
+    'loginApi',
+    async (payload, { rejectWithValue }) => {
+        const { emailData, passwordData, googleToken } = payload;
+        let param = {};
+        console.log("loginApi => ", emailData);
+        if (googleToken) {
+            // If Google token is provided, only send the Google token
+            param = { googleToken: googleToken };
+        } else if (emailData && passwordData) {
+            // If email and password are provided, send them
+            param = {
+                email: emailData,
+                password: passwordData
+            };
+        } else {
+            // If neither email/password nor Google token is provided, throw an error
+            throw new Error('Either email/password or Google token must be provided.');
+        }
+
+        // Make the POST request with the appropriate parameters
+        try {
+            const response = await axiosInstance.post("/login", param);
+            const responseData = response.data;
+            console.log("LOGG => ", responseData);
+            return responseData;
+        } catch (error: any) {
+            // Check if the error is from Axios
+            if (error.response) {
+                // Return the error message or any other data from the response
+                return rejectWithValue(error.response.data.message || 'Login failed');
+            } else if (error.request) {
+                // Handle no response received
+                return rejectWithValue('No response received from server.');
+            } else {
+                // Handle any other errors
+                return rejectWithValue(error.message);
+            }
+        }
+    }
+);
+
 export const fetchProfile = createAsyncThunk<any, { userId: string }>(
     'profileApi',
     async (payload) => {

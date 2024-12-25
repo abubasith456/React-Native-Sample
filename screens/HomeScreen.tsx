@@ -150,8 +150,6 @@ const styles = StyleSheet.create({
     },
     flatListContainer: {
         justifyContent: 'space-between', // Adds space between rows
-        paddingHorizontal: 10,
-        backgroundColor: 'red'         // Adjust the space between columns
     },
     categoryItem: {
         alignItems: 'center',

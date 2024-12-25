@@ -5,7 +5,7 @@ import { fetchProducts } from '../core/api/UserRepo';
 import { filterProducts } from '../core/state_management/api_slice/SearchSlice';
 import { GlobalStyle } from '../constants/styles';
 
-const SearchProductsScreen = ({ navigation }) => {
+const SearchProductsScreen = ({ navigation }: any) => {
     const dispatch = useAppDispatch();
 
     // Get products and loading state from the Redux store
@@ -26,7 +26,7 @@ const SearchProductsScreen = ({ navigation }) => {
     };
 
     // Render Item for FlatList
-    const renderProductItem = ({ item }) => (
+    const renderProductItem = ({ item }: any) => (
         <TouchableOpacity style={styles.productCard} onPress={() => {
             navigation.navigate('ProductDetails', { product: item });
         }}>

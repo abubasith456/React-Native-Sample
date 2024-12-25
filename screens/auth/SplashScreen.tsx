@@ -1,0 +1,78 @@
+import React, { useEffect, useRef } from "react";
+import { View, Image, StyleSheet, Animated } from "react-native";
+import { getUserData } from "../../core/local_storage/LocalStorage";
+import { StackActions } from "@react-navigation/native";
+
+export const SplashScreen = ({ navigation }: any) => {
+    const scaleAnim = useRef(new Animated.Value(0)).current; // Initial scale is 0
+    const opacityAnim = useRef(new Animated.Value(0)).current; // Initial opacity is 0
+
+    useEffect(() => {
+        startAnimation();
+        handleRetrieve();
+    }, []);
+
+    const startAnimation = () => {
+        Animated.parallel([
+            Animated.timing(scaleAnim, {
+                toValue: 1, // Final scale value
+                duration: 2000, // Duration of the zoom effect
+                useNativeDriver: true,
+            }),
+            Animated.timing(opacityAnim, {
+                toValue: 1, // Final opacity value
+                duration: 2000, // Duration of the fade-in effect
+                useNativeDriver: true,
+            }),
+        ]).start();
+    };
+
+    const handleRetrieve = async () => {
+        const retrievedData = await getUserData();
+        console.log('Retrieved Data:', retrievedData);
+        setTimeout(async () => {
+            if (retrievedData && Object.keys(retrievedData).length > 0) {
+                // User data exists, navigate to home screen
+                navigation.dispatch(StackActions.replace("Home"));
+            } else {
+                // No user data, navigate to login screen
+                navigation.dispatch(StackActions.replace("Login"));
+            }
+        }, 4000);
+    };
+
+    return (
+        <View style={styles.container}>
+            <Animated.View
+                style={[
+                    styles.imageContainer,
+                    {
+                        transform: [{ scale: scaleAnim }], // Apply scale animation
+                        opacity: opacityAnim, // Apply opacity animation
+                    },
+                ]}
+            >
+                <Image
+                    source={require('../../assets/logo.png')}
+                    style={styles.image}
+                />
+            </Animated.View>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "white",
+    },
+    imageContainer: {
+        padding: 20,
+    },
+    image: {
+        height: 170,
+        width: 300,
+    },
+});

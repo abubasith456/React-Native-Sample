@@ -1,10 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchProducts } from '../../api/UserRepo';
+import { Product } from '../../../model/HomeModel';
 
+interface SearchResponse {
+  products: Product[] | null;
+  filteredProducts: Product[] | null;
+  loading: boolean;
+}
 
-const initialState = {
-  products: [],
-  filteredProducts: [],
+const initialState: SearchResponse = {
+  products: null,
+  filteredProducts: null,
   loading: false,
 };
 
@@ -16,10 +22,10 @@ const productsSlice = createSlice({
     filterProducts: (state, action) => {
       const searchQuery = action.payload?.toLowerCase()?.trim();
       if (!searchQuery) {
-        state.filteredProducts = []
+        state.filteredProducts = null
         return;
       }
-      const data = state.products.filter((product) => {
+      const data = state.products?.filter((product) => {
         if (!product || typeof product.name !== "string") {
           console.log("Invalid product structure:", product);
           return false;
@@ -29,7 +35,7 @@ const productsSlice = createSlice({
         return resultData;
       });
       console.log(" Filtered => ", data)
-      state.filteredProducts = data
+      state.filteredProducts = data as Product[]
     },
   },
 

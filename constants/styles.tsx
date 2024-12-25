@@ -1,8 +1,10 @@
+import { DefaultTheme } from 'react-native-paper'
 
 export const GlobalStyle = {
+    ...DefaultTheme.colors,
     primaryColor: '#87CEEB',
     primaryLightColor: '#87CEEB', //Will change
-    primaryButtonColor: '#87CEEB',
+    primaryButtonColor: '#00BFFF',
     primaryTextColor: 'white',
     secondaryTextColor: 'grey'
 }
