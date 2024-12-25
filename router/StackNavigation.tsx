@@ -17,7 +17,7 @@ export const StackNagivation = () => {
                 <Stack.Screen name='Splash' component={SplashScreen} options={{
                     headerShown: false
                 }} />
-                <Stack.Screen name='Home' component={BottomNavigator} options={{
+                <Stack.Screen name='HomeScreen' component={BottomNavigator} options={{
                     headerShown: false
                 }} />
                 <Stack.Screen name="Search" component={SearchProductsScreen} />

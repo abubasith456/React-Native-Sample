@@ -6,6 +6,7 @@ import ProfileSlice from './api_slice/ProfileSlice';
 import LoginSlice from './screen_slice/LoginSlice';
 import SignupSlice from './screen_slice/SignupSlice';
 import loginSlice from './api_slice/LoginSlice';
+import registerSlice from './api_slice/SignInSlice';
 
 export const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
         signUp: SignupSlice,
         //Api
         loginApi: loginSlice,
+        signUpApi: registerSlice,
         profileApi: ProfileSlice,
         homeApi: HomeSlice,
         productSearch: SearchProductSlice

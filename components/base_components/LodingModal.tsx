@@ -8,9 +8,11 @@ import LottieView from 'lottie-react-native'; // Use this if you installed manua
 
 interface LoadingModalProps {
     isVisible: boolean;
+    type: 'normal' | 'home'
 }
 
-const LoadingModal: React.FC<LoadingModalProps> = ({ isVisible }) => {
+const LoadingModal: React.FC<LoadingModalProps> = ({ isVisible, type = 'normal' }) => {
+    const path = type == 'home' ? require('../../assets/homeLoadingJSON.json') : require('../../assets/loadingJSON.json')
     return (
         <Modal
             animationType="none"
@@ -21,7 +23,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isVisible }) => {
             <View style={styles.modalOverlay}>
                 <View style={styles.loaderContainer}>
                     <LottieView
-                        source={require('../../assets/loadingJSON.json')}
+                        source={path}
                         autoPlay
                         loop
                         style={styles.gif}

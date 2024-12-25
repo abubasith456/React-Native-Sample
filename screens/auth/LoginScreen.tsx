@@ -7,16 +7,12 @@ import { resetForm, setEmail, setPassword, showDialog, toggleShowPassword } from
 import TextInput from "../../components/base_components/TextInput";
 import { Ionicons } from "@expo/vector-icons";
 import CenteredButton from "../../components/base_components/CenteredButton";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { login } from "../../core/api/UserRepo";
-import { ProgressBar } from "../../components/base_components/ProgressBar";
-import { ActivityIndicator } from "react-native-paper";
-import LottieView from 'lottie-react-native';
 import LoadingModal from "../../components/base_components/LodingModal";
 import CustomMessageDialog from "../../components/base_components/CustomMessageDialog";
-import { getUserData, saveUserData } from "../../core/local_storage/LocalStorage";
-
-
+import { saveUserData } from "../../core/local_storage/LocalStorage";
+import { resetState } from "../../core/state_management/api_slice/LoginSlice";
 
 export const LoginScreen = ({ navigation }: any) => {
     const dispatch = useAppDispatch();
@@ -69,16 +65,23 @@ export const LoginScreen = ({ navigation }: any) => {
 
     const handleSave = async (userData: any) => {
         await saveUserData(userData);
+        dispatch(resetForm());
+        dispatch(resetState())
         navigation.reset({
             index: 0,
-            routes: [{ name: 'Home' }],
+            routes: [{
+                name: 'HomeScreen',
+                params: {
+                    userId: userData.user_id,
+                },
+            }],
         })
     };
 
     return (
         <BaseView>
-            {/* Modal with ActivityIndicator */}
-            <LoadingModal isVisible={isLoader} />
+            {/* Modal with Custom loader */}
+            <LoadingModal isVisible={isLoader} type="normal" />
             <CustomMessageDialog
                 isVisible={dialog.visible}
                 message={errorMessage}
@@ -88,7 +91,7 @@ export const LoginScreen = ({ navigation }: any) => {
                     dispatch(showDialog({
                         visible: false
                     }))
-                }} // Close the dialog when pressed
+                }}
             />
             <View style={styles.container}>
                 {/* Logo */}
@@ -137,11 +140,6 @@ export const LoginScreen = ({ navigation }: any) => {
 
                 <TouchableOpacity onPress={() => {
                     dispatch(resetForm());
-                    navigation.dispatch(
-                        navigation.navigate({
-                            name: 'Forgot',
-                        })
-                    )
                 }} style={styles.forgotPasswordContainer}>
                     <Text style={styles.forgotPassword}>Forgot Password?</Text>
                 </TouchableOpacity>
@@ -156,12 +154,10 @@ export const LoginScreen = ({ navigation }: any) => {
                     <Text style={styles.signUpText}>Don’t have an account?</Text>
                     <TouchableOpacity onPress={() => {
                         dispatch(resetForm());
-                        navigation.dispatch(
-                            navigation.navigate({
-                                name: 'SignUp',
-                                //params: { registrationType: "number" }
-                            })
-                        )
+                        navigation.navigate({
+                            name: 'Signup',
+                            //params: { registrationType: "number" }
+                        })
                     }}>
                         <Text style={styles.signUpLink}>Singup</Text>
                     </TouchableOpacity>

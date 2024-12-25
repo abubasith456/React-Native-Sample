@@ -25,6 +25,7 @@ const homeSlice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(fetchHome.pending, (state, action) => {
+                state.error = false
                 state.loading = true;
             })
             .addCase(fetchHome.fulfilled, (state, action) => {

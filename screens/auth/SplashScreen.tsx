@@ -33,7 +33,9 @@ export const SplashScreen = ({ navigation }: any) => {
         setTimeout(async () => {
             if (retrievedData && Object.keys(retrievedData).length > 0) {
                 // User data exists, navigate to home screen
-                navigation.dispatch(StackActions.replace("Home"));
+                const data = { userId: retrievedData.user_id }
+                console.log("Navigating to Home with params: ", data);
+                navigation.dispatch(StackActions.replace("HomeScreen"));
             } else {
                 // No user data, navigate to login screen
                 navigation.dispatch(StackActions.replace("Login"));

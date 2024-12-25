@@ -13,21 +13,38 @@ import { fetchHome } from "../core/api/UserRepo";
 import { HomeHeader } from "../components/home_components/HomeHeader";
 import { HomeBanner } from "../components/home_components/HomeBanner";
 import { categoriesData, productsData, recentPurchasesData } from "../constants/ApiSampleResponse";
+import LoadingModal from "../components/base_components/LodingModal";
+import { getUserData } from "../core/local_storage/LocalStorage";
 
-export const HomeScreen = ({ navigation }: any) => {
+export const HomeScreen = ({ navigation, route }: any) => {
+    console.log("navigation data =>", navigation)
+    console.log("route data =>", route)
     const dispatch = useAppDispatch();
     const { loading, data, error, errorMessage } = useAppSelector((state: RootState) => state.homeApi);
     const userData = data?.data.user
-    const userId = "11"
+    let userId = "11"
 
     console.log(" data ===> " + data);
 
     useEffect(() => {
-        dispatch(fetchHome({ userId }))
-        if (error && !loading) {
-            Alert.alert("Error", errorMessage ? errorMessage : "Something went wrong!");
+        if (!!data) {
+            if (!!data.data) {
+                ///Success
+            }
+        } else {
+            if (error) {
+                console.log(errorMessage)
+            }
         }
+        handleRetrieve()
     }, []);
+
+    //TODO: will change this to route navigation data
+    const handleRetrieve = async () => {
+        const retrievedData = await getUserData();
+        const userId = retrievedData?.user_id
+        dispatch(fetchHome({ userId }))
+    }
 
     const renderCategoryItem = ({ item }: any) => (
         <View style={styles.categoryItem}>
@@ -62,6 +79,8 @@ export const HomeScreen = ({ navigation }: any) => {
 
     return (
         <View style={styles.container}>
+            {/* Loader */}
+            <LoadingModal isVisible={loading} type="home" />
             {/* Header */}
             <HomeHeader
                 profilePicUrl={userData?.profilePic}

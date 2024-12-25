@@ -1,7 +1,7 @@
 import { BaseView } from "../../components/base_components/BaseView";
 import { emailValidator, nameValidator, passwordValidator } from "../../helper/Validators";
 import { RootState, useAppDispatch, useAppSelector } from "../../core/state_management/store";
-import { setDateOfBirth, setEmail, setMobileNumber, setName, setPassword, tapShowDatePicker, toggleShowPassword } from "../../core/state_management/screen_slice/SignupSlice";
+import { setDateOfBirth, setEmail, setMobileNumber, setName, setPassword, showDialog, tapShowDatePicker, toggleShowPassword } from "../../core/state_management/screen_slice/SignupSlice";
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { GlobalStyle } from "../../constants/styles";
 import BackButton from "../../components/base_components/BackButton";
@@ -9,7 +9,11 @@ import TextInput from "../../components/base_components/TextInput";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import CenteredButton from "../../components/base_components/CenteredButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { register } from "../../core/api/UserRepo";
+import LoadingModal from "../../components/base_components/LodingModal";
+import { saveUserData } from "../../core/local_storage/LocalStorage";
+import CustomMessageDialog from "../../components/base_components/CustomMessageDialog";
 
 
 export const SignUpScreen = ({ navigation }: any) => {
@@ -23,11 +27,41 @@ export const SignUpScreen = ({ navigation }: any) => {
         registrationType,
         showDatePicker,
         dateOfBirth,
+        dialog
     } = useAppSelector((state: RootState) => state.signUp);
     // const [date, setDate] = useState<Date>();
     const date = dateOfBirth ? new Date(dateOfBirth) : new Date();
+    const { data, isLoader, isError, errorMessage } = useAppSelector(
+        (state: RootState) => state.signUpApi
+    );
 
-    console.log('showDatePicker -> ', showDatePicker);
+    console.log('data -> ', data);
+
+    useEffect(() => {
+        console.log("User effect called")
+        if (!!data) {
+            console.log("!!data")
+            if (!!data.userData) {
+                const userData = {
+                    user_id: data.userData?.user_id,
+                    username: data.userData?.username,
+                    email: data.userData?.email,
+                    dateOfBirth: data.userData?.dateOfBirth,
+                    mobileNumber: date.toISOString().split('T')[0]
+                };
+                handleSave(userData);
+            }
+        } else {
+            console.log("Error called")
+            if (isError) {
+                dispatch(showDialog({
+                    visible: true,
+                    message: errorMessage,
+                    type: 'info'
+                }))
+            }
+        }
+    }, [data, errorMessage, dispatch]);
 
 
     const onSignUpPressed = () => {
@@ -61,16 +95,22 @@ export const SignUpScreen = ({ navigation }: any) => {
             emailValue: email.value,
             mobileValue: mobileNumber.value,
             passwordValue: password.value,
-            // dateOfBirth: date.toISOString().split('T')[0],
+            dateOfBirth: date.toISOString().split('T')[0],
         };
-
-        //dispatch(register(payload));
+        dispatch(register(payload));
     };
 
-    const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-        const currentDate = selectedDate || date;
-        dispatch(tapShowDatePicker(Platform.OS === 'ios'));
-        //setDate(currentDate);  // Set the selected date
+    const handleSave = async (userData: any) => {
+        await saveUserData(userData);
+        navigation.reset({
+            index: 0,
+            routes: [{
+                name: 'HomeScreen',
+                params: {
+                    userId: userData.user_id,
+                },
+            }],
+        })
     };
 
     const handleDateChange = (event: any, selectedDate: Date | undefined) => {
@@ -99,6 +139,19 @@ export const SignUpScreen = ({ navigation }: any) => {
     return (
         <BaseView>
             <View style={styles.container}>
+                {/* Modal with Custom loader */}
+                <LoadingModal isVisible={isLoader} type="normal" />
+                <CustomMessageDialog
+                    isVisible={dialog.visible}
+                    message={errorMessage}
+                    type={dialog.type}
+                    onClose={() => {
+                        dispatch(showDialog({
+                            visible: false
+                        }))
+                    }}
+                />
+                {/* Header Back Button */}
                 <BackButton goBack={goBack} />
                 {/* Logo */}
                 <Image

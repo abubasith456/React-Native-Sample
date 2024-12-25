@@ -5,6 +5,7 @@ import { ProfileContent } from "../components/profile_component/ProfileContent/P
 import { ButtonBottomLogout } from "../components/profile_component/ProfileContent/ButtonBottomLogout";
 import { fetchProfile } from "../core/api/UserRepo";
 import { RootState, useAppDispatch, useAppSelector } from "../core/state_management/store";
+import { deleteUserData, getUserData } from "../core/local_storage/LocalStorage";
 
 const headerIconUrl: string = ""
 const profilePic = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8UDpyRVcLyyOViNVGvvk-TRAbmWfif0nemg&s"
@@ -15,15 +16,29 @@ export const ProfileScreen = ({ navigation }: any) => {
         = useAppSelector((state: RootState) => state.profileApi);
 
     useEffect(() => {
-        const userId = "11"
-        dispatch(fetchProfile({ userId }))
+        handleRetrieve();
     }, [dispatch]);
+
+    //TODO: will change this to route navigation data
+    const handleRetrieve = async () => {
+        const retrievedData = await getUserData();
+        const userId = retrievedData?.user_id
+        dispatch(fetchProfile({ userId }))
+    }
+
+    const handleDelete = async () => {
+        await deleteUserData();
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'Login' }],
+        })
+    };
 
     return (
         <View style={{ flex: 1 }}>
             {/* Profile Header COntent */}
             <HeaderCard
-                usernameTitle={"Mohamed Abu Basith S"}
+                usernameTitle={data?.username}
                 userSubTitile={data?.email}
                 profileUrl={data?.profilePic}
                 headerIconUrl={headerIconUrl}
@@ -39,6 +54,7 @@ export const ProfileScreen = ({ navigation }: any) => {
             {/* Logout Button */}
             <ButtonBottomLogout onClick={() => {
                 //navigation.goBack();
+                handleDelete();
             }} />
         </View>
     )

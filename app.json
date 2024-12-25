@@ -14,19 +14,25 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.hayat.test"
+      "bundleIdentifier": "com.hayat.dev"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.hayat.test"
+      "package": "com.hayat.dev"
     },
     "web": {
+      "build": {
+        "env": {
+          "GOOGLE_CLIENT_ID": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+        }
+      },
       "favicon": "./assets/favicon.png"
     },
     "extra": {
+      "googleClientId": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
       "eas": {
         "projectId": "67a0e5a4-022c-4e87-b694-c3ad191fa0e6"
       }

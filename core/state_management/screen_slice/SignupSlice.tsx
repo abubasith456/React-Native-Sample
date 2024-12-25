@@ -1,6 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+interface LoginScreenState {
+    name: { value: string, error: string };
+    email: { value: string, error: string };
+    mobileNumber: { value: string, error: string }
+    password: { value: string, error: string };
+    showPassword: boolean;
+    dateOfBirth: string;
+    registrationType: string;
+    showDatePicker: boolean;
+    dialog: { visible: boolean, message: string, type: 'error' | 'info' | 'success' };
+}
+
+const initialState: LoginScreenState = {
     name: { value: '', error: '' },
     email: { value: '', error: '' },
     mobileNumber: { value: '', error: '' },
@@ -8,7 +20,8 @@ const initialState = {
     showPassword: false,
     dateOfBirth: '',
     registrationType: 'email', // default type
-    showDatePicker: false
+    showDatePicker: false,
+    dialog: { visible: false, message: '', type: 'info' },
 };
 
 const signUpSlice = createSlice({
@@ -41,6 +54,9 @@ const signUpSlice = createSlice({
             state.showDatePicker = action.payload;
             console.log('Updated showDatePicker:', state.showDatePicker);
         },
+        showDialog(state, action) {
+            state.dialog = action.payload;
+        }
     },
 });
 
@@ -54,8 +70,8 @@ export const {
     setDateOfBirth,
     setRegistrationType,
     toggleShowPassword,
-    tapShowDatePicker
-
+    tapShowDatePicker,
+    showDialog
 } = signUpSlice.actions;
 
 export default signUpSlice.reducer;
