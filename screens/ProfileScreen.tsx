@@ -19,7 +19,6 @@ export const ProfileScreen = ({ navigation }: any) => {
         handleRetrieve();
     }, [dispatch]);
 
-    //TODO: will change this to route navigation data
     const handleRetrieve = async () => {
         const retrievedData = await getUserData();
         const userId = retrievedData?.user_id

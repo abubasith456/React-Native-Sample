@@ -17,6 +17,7 @@
       "bundleIdentifier": "com.hayat.dev"
     },
     "android": {
+      "googleServicesFile": "./assets/google-services.json" ,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

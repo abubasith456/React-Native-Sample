@@ -6,6 +6,7 @@ import {
     FlatList,
     Image,
     Alert,
+    TouchableOpacity,
 } from "react-native"
 import { RootState, useAppDispatch, useAppSelector } from "../core/state_management/store";
 import { useEffect } from "react";
@@ -47,10 +48,12 @@ export const HomeScreen = ({ navigation, route }: any) => {
     }
 
     const renderCategoryItem = ({ item }: any) => (
-        <View style={styles.categoryItem}>
+        <TouchableOpacity style={styles.categoryItem} onPress={() => {
+            navigation.navigate("Products", { productName: item.link });
+        }}>
             <Image source={{ uri: item.image }} style={styles.categoryIcon} />
             <Text style={styles.categoryName}>{item.name}</Text>
-        </View>
+        </TouchableOpacity>
     );
 
     const renderProductItem = ({ item }: any) => (
@@ -168,13 +171,16 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     flatListContainer: {
-        justifyContent: 'space-between', // Adds space between rows
+        justifyContent: 'space-between', // Space between items in a row
+        paddingHorizontal: 5,           // Small padding for the container
+        flexGrow: 1,                    // Ensure the container grows to fit its content
     },
     categoryItem: {
-        alignItems: 'center',
-        marginTop: 10,
-        paddingHorizontal: 10,
-        justifyContent: 'space-between'
+        flex: 1,                        // Ensure items take equal space
+        alignItems: 'center',           // Center items horizontally
+        justifyContent: 'center',       // Center items vertically
+        marginVertical: 10,             // Add vertical spacing between rows
+        marginHorizontal: 5,            // Small margin for spacing
     },
     categoryIcon: {
         width: 70,
@@ -184,6 +190,7 @@ const styles = StyleSheet.create({
     },
     categoryName: {
         fontSize: 14,
+        textAlign: 'center',            // Center-align text
     },
     productCard: {
         flex: 1,

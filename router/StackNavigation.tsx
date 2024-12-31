@@ -7,6 +7,7 @@ import { EditProfileScreen } from '../screens/EditProfileScreen';
 import { LoginScreen } from '../screens/auth/LoginScreen';
 import { SignUpScreen } from '../screens/auth/SignUpScreen';
 import { SplashScreen } from '../screens/auth/SplashScreen';
+import { ProductsScreen } from '../screens/ProductsScreen';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +30,7 @@ export const StackNagivation = () => {
                 <Stack.Screen name='Signup' component={SignUpScreen} options={{
                     headerShown: false
                 }} />
+                <Stack.Screen name='Products' component={ProductsScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

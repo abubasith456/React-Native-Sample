@@ -51,7 +51,6 @@ const ProductDetails = ({ route, navigation }: any) => {
         Animated.timing(fadeAnim, {
             toValue: 1,
             duration: 800,
-            easing: Easing.ease,
             useNativeDriver: true,
         }).start();
     }, []);

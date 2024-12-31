@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchProducts } from '../../api/UserRepo';
-import { Product } from '../../../model/HomeModel';
+import { Product } from '../../../model/ProductModel';
 
 interface SearchResponse {
   products: Product[] | null;

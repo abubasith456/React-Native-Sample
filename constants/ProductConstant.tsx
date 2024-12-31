@@ -4,7 +4,7 @@ export type Category =
     | 'fruits'
     | 'drinks'
     | 'groceries'
-    | 'healthcare'
+    | 'healthcares'
     | 'driednoodles'
     | 'babyitems'
     | 'personalcares';
@@ -15,7 +15,7 @@ export const quantityOptions: Record<Category, (string | number)[]> = {
     fruits: ['200g', '500g', '1kg', '1.5kg', '2kg'],
     drinks: ['2000ml', '250ml', '500ml', '1L'],
     groceries: ['50g', '100g', '200g', '500g', '1kg'],
-    healthcare: [1],
+    healthcares: [1],
     driednoodles: ['100g', '200g'],
     babyitems: [1],
     personalcares: [1],
@@ -37,7 +37,7 @@ export const getUnitForCategory = (category: any) => {
             return 'ml';
         case 'grocery':
             return 'g';
-        case 'healthcare':
+        case 'healthcares':
         case 'driednoodles':
         case 'babyitem':
         case 'personalcares':
