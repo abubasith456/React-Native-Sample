@@ -1,4 +1,4 @@
-import { Animated, TouchableOpacity, View, Text, StyleSheet, PixelRatio, Dimensions } from "react-native"
+import { Platform, Animated, TouchableOpacity, View, Text, StyleSheet, PixelRatio, Dimensions } from "react-native"
 const { height } = Dimensions.get("window");
 
 
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
         height: 600,
         backgroundColor: '#fff',
         padding: 20,
-        marginTop: -height * 0.20,
+        marginTop: Platform.OS === 'ios' ? -height * 0.20 : -height * 0.10,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         shadowColor: '#000',

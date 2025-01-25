@@ -5,7 +5,7 @@ import * as FileSystem from 'expo-file-system';
 import { APP_NAME } from '../../constants/AppConstants';
 
 
-const BASE_URL = "http://localhost:4000/api/v1"
+const BASE_URL = "https://hayat-shop.onrender.com/api/v1"
 const axiosInstance = axios.create({ baseURL: BASE_URL })
 
 export const login = createAsyncThunk<any, { emailData: string, passwordData: string, googleToken: string | null }>(
