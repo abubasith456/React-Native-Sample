@@ -24,7 +24,6 @@
     "expo": "^52.0.23",
     "expo-auth-session": "^6.0.1",
     "expo-device": "^7.0.1",
-    "expo-firebase-core": "^6.0.0",
     "expo-image-picker": "^16.0.3",
     "expo-notifications": "^0.29.11",
     "expo-permissions": "^14.4.0",
