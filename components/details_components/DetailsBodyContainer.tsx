@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
         height: 600,
         backgroundColor: '#fff',
         padding: 20,
-        marginTop: Platform.OS === 'ios' ? -height * 0.20 : -height * 0.10,
+        marginTop: Platform.OS === 'ios' ? -height * 0.15 : -height * 0.10,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         shadowColor: '#000',
