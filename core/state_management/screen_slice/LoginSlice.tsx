@@ -29,9 +29,7 @@ const loginSlice = createSlice({
             state.showPassword = !state.showPassword;
         },
         showDialog(state, action) {
-            console.log("State: > ", state.dialog)
             state.dialog = action.payload;
-            console.log("State: > ", state.dialog)
         },
         resetForm(state) {
             state.email = { value: '', error: '' };

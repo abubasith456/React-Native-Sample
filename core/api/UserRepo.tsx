@@ -121,12 +121,13 @@ export const fetchProfile = createAsyncThunk<any, { userId: string }>(
 export const fetchHome = createAsyncThunk<any, { userId: string }>(
     'profileApi',
     async (payload, { rejectWithValue }) => {
-        console.log(payload);
+        console.log("USERID : ", payload);
         const { userId } = payload;
         try {
             const response = await axiosInstance.get("/home", {
                 params: { id: userId }
             });
+            console.log("RESPONSE DATA : ", response.data);
             return response.data;
         } catch (error: any) {
             if (error.response) {
@@ -147,7 +148,7 @@ export const fetchProducts = createAsyncThunk(
             console.log("productSearch: ")
             let categories = []
             if (APP_NAME.includes("Musfi")) {
-                categories = ['hijabs']
+                categories = ['hijabs', 'featureProducts', 'scarfs']
             } else {
                 categories = [, 'vegetables', 'fruits', 'grocery', 'dairy', 'personalCare', 'healthCare', 'babyItems'];
             }

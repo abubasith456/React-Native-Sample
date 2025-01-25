@@ -9,12 +9,14 @@ import loginSlice from './api_slice/LoginSlice';
 import registerSlice from './api_slice/SignInSlice';
 import productsSlice from './api_slice/ProductsSlice';
 import OrderHistorySlice from './api_slice/OrderHistorySlice';
+import CartSlice from './screen_slice/Cart'
 
 export const store = configureStore({
     reducer: {
         // Screens
         login: LoginSlice,
         signUp: SignupSlice,
+        cart: CartSlice,
         //Api
         loginApi: loginSlice,
         signUpApi: registerSlice,

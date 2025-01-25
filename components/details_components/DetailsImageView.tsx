@@ -24,7 +24,7 @@ export const DetailsImageView = ({ product, imageZoom }: any) => {
     };
 
     const isMultipleImages = Array.isArray(product.images) && product.images.length > 0;
-    console.log("isMultipleImages: ", product.images)
+
     return (
         <Animated.View style={[styles.imageContainer, { transform: [{ scale: imageZoom }] }]}>
             {isMultipleImages ?

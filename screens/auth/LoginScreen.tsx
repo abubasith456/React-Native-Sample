@@ -26,7 +26,7 @@ export const LoginScreen = ({ navigation }: any) => {
     console.log(" data ===> ", data)
 
     useEffect(() => {
-        if (!!data) {
+        if (!!data && data != null) {
             if (!!data.userData) {
                 const userData = {
                     user_id: data.userData?.user_id,
@@ -39,12 +39,14 @@ export const LoginScreen = ({ navigation }: any) => {
             }
         } else {
             console.log("Error called")
+            dispatch(resetForm());
             if (isError) {
-                dispatch(showDialog({
-                    visible: true,
-                    message: errorMessage,
-                    type: 'info'
-                }))
+                dispatch(
+                    showDialog({
+                        visible: true,
+                        message: errorMessage,
+                        type: 'info'
+                    }))
             }
         }
     }, [data, errorMessage, dispatch]);
@@ -91,6 +93,7 @@ export const LoginScreen = ({ navigation }: any) => {
                     dispatch(showDialog({
                         visible: false
                     }))
+                    dispatch(resetState())
                 }}
             />
             <View style={styles.container}>

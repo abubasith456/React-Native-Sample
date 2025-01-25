@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions, Text, TouchableOpacity } from "react-native"
+import { StyleSheet, View, Dimensions, Text, TouchableOpacity, PixelRatio } from "react-native"
 import { GlobalStyle } from "../../constants/styles";
 import { Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -40,10 +40,10 @@ export const HomeHeader = ({ profilePicUrl, userName, searchOnPressed }: any) =>
 const styles = StyleSheet.create({
     headerCard: {
         width: "100%",
-        height: height * 0.15,
-        paddingTop: height * 0.07,
+        height: height * 0.17,
+        paddingTop: height * 0.08,
         backgroundColor: GlobalStyle.primaryColor,
-        borderBottomEndRadius:30,
+        borderBottomEndRadius: 30,
         borderBottomStartRadius: 30
     },
     headerInnerContainer: {
@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 20
     },
     headerIcon: {
-        width: height * 0.06, // 5% of screen height
-        height: height * 0.06,
+        width: height * 0.07, // 5% of screen height
+        height: height * 0.07,
         resizeMode: 'contain', // Keep aspect ratio
         alignSelf: 'center',
         borderRadius: 30
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         marginStart: 10,
     },
     text: {
-        fontSize: 16,
+        fontSize: PixelRatio.getFontScale() * 18,
         fontWeight: 'bold',
         color: 'white',
     },

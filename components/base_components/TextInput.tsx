@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
         marginVertical: 12,
     },
     input: {
+        height: 50,
         backgroundColor: GlobalStyle.surface,
     },
     description: {

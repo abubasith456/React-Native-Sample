@@ -2,10 +2,12 @@ import React, { useEffect, useRef } from "react";
 import { View, Image, StyleSheet, Animated } from "react-native";
 import { getUserData } from "../../core/local_storage/LocalStorage";
 import { StackActions } from "@react-navigation/native";
+import { APP_NAME } from "../../constants/AppConstants";
 
 export const SplashScreen = ({ navigation }: any) => {
     const scaleAnim = useRef(new Animated.Value(0)).current; // Initial scale is 0
     const opacityAnim = useRef(new Animated.Value(0)).current; // Initial opacity is 0
+    const imagePath = APP_NAME.includes("Musfi") ? require('../../assets/logo-no-background.png') : require('../../assets/logo.png')
 
     useEffect(() => {
         startAnimation();
@@ -55,7 +57,7 @@ export const SplashScreen = ({ navigation }: any) => {
                 ]}
             >
                 <Image
-                    source={require('../../assets/logo.png')}
+                    source={imagePath}
                     style={styles.image}
                 />
             </Animated.View>
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "white",
+        backgroundColor: APP_NAME.includes("Musfi") ? "black" : "white",
     },
     imageContainer: {
         padding: 20,

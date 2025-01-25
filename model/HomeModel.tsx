@@ -4,6 +4,7 @@ export interface Product {
     productName: string;
     productImage: string;
     price: string;
+    images: string[];
 }
 
 export interface Banner {

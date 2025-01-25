@@ -22,10 +22,11 @@ export const HomeScreen = ({ navigation, route }: any) => {
     console.log("route data =>", route)
     const dispatch = useAppDispatch();
     const { loading, data, error, errorMessage } = useAppSelector((state: RootState) => state.homeApi);
-    const userData = data?.data.user
+    const userData = data?.data.user;
+    const featureProducts = data?.data.products ?? [];
     let userId = "11"
 
-    console.log(" data ===> " + data);
+    console.log(" data ===> " + data?.data);
 
     useEffect(() => {
         if (!!data) {
@@ -51,18 +52,22 @@ export const HomeScreen = ({ navigation, route }: any) => {
         <TouchableOpacity style={styles.categoryItem} onPress={() => {
             navigation.navigate("Products", { productName: item.link });
         }}>
-            <Image source={{ uri: item.image }}
+            <Image
+                resizeMode="contain"
+                source={{ uri: item.image }}
                 style={styles.categoryIcon} />
             <Text style={styles.categoryName}>{item.name}</Text>
         </TouchableOpacity>
     );
 
     const renderProductItem = ({ item }: any) => (
-        <View style={styles.productCard}>
-            <Image source={{ uri: item.productImage }} style={styles.productImage} />
+        <TouchableOpacity style={styles.productCard} onPress={() => {
+            navigation.navigate('ProductDetails', { product: item, productName: "hijabs" });
+        }}>
+            <Image source={{ uri: item.productImage ?? item.images[0] }} style={styles.productImage} />
             <Text style={styles.productName}>{item.name}</Text>
             <Text style={styles.productPrice}>Rs.{item.price}</Text>
-        </View>
+        </TouchableOpacity>
     );
 
     const renderRecentPurchaseItem = ({ item }: any) => (
@@ -119,7 +124,7 @@ export const HomeScreen = ({ navigation, route }: any) => {
                     <Text style={styles.sectionTitle}>Featured Products</Text>
                     <FlatList
                         numColumns={2}
-                        data={data?.data.products || productsData}
+                        data={featureProducts || productsData}
                         renderItem={renderProductItem}
                         keyExtractor={(item) => Math.random().toString()}
                         scrollEnabled={false} // Disable FlatList scrolling inside ScrollView
@@ -188,7 +193,6 @@ const styles = StyleSheet.create({
         height: 70,
         borderRadius: 35,
         marginBottom: 5,
-        padding: 10
     },
     categoryName: {
         fontSize: 14,
@@ -205,7 +209,7 @@ const styles = StyleSheet.create({
     },
     productImage: {
         width: '100%',
-        height: 100,
+        height: 150,
         borderRadius: 5,
     },
     productName: {

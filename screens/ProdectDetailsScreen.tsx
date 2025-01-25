@@ -11,7 +11,6 @@ import { DetailsBottomButton } from '../components/details_components/DetailsBot
 
 const ProductDetails = ({ route, navigation }: any) => {
     const { product, productName } = route.params; // Product data passed from navigation
-    console.log("product: ", product)
     if (!product || !product.category) {
         product.category = productName || 'defaultCategory';  // Fallback if no productName
     }

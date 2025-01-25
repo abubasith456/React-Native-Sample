@@ -10,7 +10,7 @@ const SearchProductsScreen = ({ navigation }: any) => {
 
     // Get products and loading state from the Redux store
     const { filteredProducts, loading } = useAppSelector((state: RootState) => state.productSearch);
-
+    console.log("filteredProducts: ", filteredProducts)
     // State for search query
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -32,7 +32,7 @@ const SearchProductsScreen = ({ navigation }: any) => {
         }}>
             {/* Product Image */}
             <Image
-                source={{ uri: item.image }}
+                source={{ uri: item.image ?? item.images[0] }}
                 style={styles.productImage}
                 resizeMode="cover"
             />
