@@ -43,7 +43,8 @@ const styles = StyleSheet.create({
         height: height * 0.15,
         paddingTop: height * 0.07,
         backgroundColor: GlobalStyle.primaryColor,
-        borderRadius: 30,
+        borderBottomEndRadius:30,
+        borderBottomStartRadius: 30
     },
     headerInnerContainer: {
         flexDirection: 'row',
@@ -52,8 +53,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 20
     },
     headerIcon: {
-        width: 50, // Icon size
-        height: 50,
+        width: height * 0.06, // 5% of screen height
+        height: height * 0.06,
         resizeMode: 'contain', // Keep aspect ratio
         alignSelf: 'center',
         borderRadius: 30

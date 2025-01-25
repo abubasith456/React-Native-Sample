@@ -1,4 +1,5 @@
-import { StyleSheet, View, Image, Text } from "react-native"
+import { StyleSheet, View, Image, Text, Dimensions } from "react-native"
+const { height } = Dimensions.get("window");
 
 export const HeaderProfile = ({ profilePicUrl, usernameTitle, userSubTitile }: any) => {
     const isprofilePicUrlAvailable = !!profilePicUrl;
@@ -11,7 +12,11 @@ export const HeaderProfile = ({ profilePicUrl, usernameTitle, userSubTitile }: a
                         style={styles.profilePicContainer}
                     /> : <Image
                         source={require('../../../assets/favicon.png')}
-                        style={{ alignSelf: 'center' }}
+                        style={{
+                            height: height * 0.06,
+                            width: height * 0.06,
+                            alignSelf: 'center'
+                        }}
                     />
                 }
             </View>
@@ -27,17 +32,16 @@ export const HeaderProfile = ({ profilePicUrl, usernameTitle, userSubTitile }: a
 
 const styles = StyleSheet.create({
     profileContainer: {
-        marginHorizontal: 10,
-        marginTop: 10,
+        marginHorizontal: 15,
+        marginTop: height * 0.01,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        padding: 10,
-
+        padding: 5,
     },
     profilePicContainer: {
-        height: 80,
-        width: 80,
+        height: height * 0.09,
+        width: height * 0.09,
         backgroundColor: 'white',
         borderRadius: 20,
         shadowColor: '#000', // Add a subtle shadow for effect

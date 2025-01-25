@@ -1,7 +1,9 @@
-import { Animated, Easing, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Animated, Easing, Text, Image, StyleSheet, TouchableOpacity, FlatList, Dimensions } from "react-native";
+import React, { useState } from 'react';
+const { height, width } = Dimensions.get("window");
+
 
 export const DetailsImageView = ({ product, imageZoom }: any) => {
-
     // Product image zoom effect on press
     const zoomInImage = () => {
         Animated.timing(imageZoom, {
@@ -21,15 +23,42 @@ export const DetailsImageView = ({ product, imageZoom }: any) => {
         }).start();
     };
 
+    const isMultipleImages = Array.isArray(product.images) && product.images.length > 0;
+    console.log("isMultipleImages: ", product.images)
     return (
         <Animated.View style={[styles.imageContainer, { transform: [{ scale: imageZoom }] }]}>
-            <TouchableOpacity onPressIn={zoomInImage} onPressOut={zoomOutImage}>
-                <Image
-                    source={{ uri: product.image }}
-                    style={styles.productImage}
-                    resizeMode="contain"
+            {isMultipleImages ?
+                // FlatList for multiple images
+                <FlatList
+                    data={product.images} // Array of image URLs
+                    horizontal
+
+                    showsHorizontalScrollIndicator={false}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity onPressIn={zoomInImage} onPressOut={zoomOutImage}>
+                            <Image
+                                resizeMode="contain"
+                                source={{ uri: item }}
+                                style={{
+                                    height: height * 0.35,
+                                    width: width,
+                                    // backgroundColor: 'black'
+                                }}
+                            />
+                        </TouchableOpacity>
+                    )}
                 />
-            </TouchableOpacity>
+                : (
+                    // Single image if product.images does not exist
+                    <TouchableOpacity onPressIn={zoomInImage} onPressOut={zoomOutImage}>
+                        <Image
+                            source={{ uri: product.image }}
+                            style={styles.productImage}
+                            resizeMode="contain"
+                        />
+                    </TouchableOpacity>
+                )}
         </Animated.View>
     );
 }
@@ -48,8 +77,12 @@ const styles = StyleSheet.create({
         shadowRadius: 20,
         elevation: 5,
     },
+    imageWrapper: {
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     productImage: {
         width: '100%',
-        height: '100%',
     },
 });

@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from "react-native"
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyle } from "../../../constants/styles";
-
+const { height } = Dimensions.get("window");
 
 export const ButtonBottomLogout = ({ onClick }: any) => {
     return (
@@ -17,7 +17,7 @@ export const ButtonBottomLogout = ({ onClick }: any) => {
 const styles = StyleSheet.create({
     logoutButtonContainer: {
         width: "100%",
-        bottom: 40, // Adjust based on how far you want the button from the bottom
+        bottom: height * 0.02, // Adjust based on how far you want the button from the bottom
         alignItems: 'center',
 
     },

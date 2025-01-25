@@ -1,5 +1,5 @@
 import { BaseView } from "../../components/base_components/BaseView";
-import { emailValidator, nameValidator, passwordValidator } from "../../helper/Validators";
+import { dobValidation, emailValidator, nameValidator, passwordValidator } from "../../helper/Validators";
 import { RootState, useAppDispatch, useAppSelector } from "../../core/state_management/store";
 import { setDateOfBirth, setEmail, setMobileNumber, setName, setPassword, showDialog, tapShowDatePicker, toggleShowPassword } from "../../core/state_management/screen_slice/SignupSlice";
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -30,7 +30,7 @@ export const SignUpScreen = ({ navigation }: any) => {
         dialog
     } = useAppSelector((state: RootState) => state.signUp);
     // const [date, setDate] = useState<Date>();
-    const date = dateOfBirth ? new Date(dateOfBirth) : new Date();
+    // const date = dateOfBirth ? new Date(dateOfBirth) : new Date();
     const { data, isLoader, isError, errorMessage } = useAppSelector(
         (state: RootState) => state.signUpApi
     );
@@ -47,7 +47,6 @@ export const SignUpScreen = ({ navigation }: any) => {
                     username: data.userData?.username,
                     email: data.userData?.email,
                     dateOfBirth: data.userData?.dateOfBirth,
-                    mobileNumber: date.toISOString().split('T')[0]
                 };
                 handleSave(userData);
             }
@@ -67,12 +66,13 @@ export const SignUpScreen = ({ navigation }: any) => {
     const onSignUpPressed = () => {
         const nameError = nameValidator(name.value);
         const passwordError = passwordValidator(password.value);
+        const dobError = dobValidation(dateOfBirth.value)
         let emailError = '';
         let mobileNumberError = '';
 
         if (registrationType === 'email') {
             emailError = emailValidator(email.value);
-        } else {
+        }  else {
             mobileNumberError = mobileNumber.value ? '' : 'Mobile number is required';
         }
 
@@ -81,12 +81,14 @@ export const SignUpScreen = ({ navigation }: any) => {
             passwordError ||
             (registrationType === 'email' && emailError) ||
             (registrationType === 'mobile' && mobileNumberError) ||
-            !date
+            dobError
         ) {
             dispatch(setName({ ...name, error: nameError }));
             dispatch(setEmail({ ...email, error: emailError }));
             dispatch(setMobileNumber({ ...mobileNumber, error: mobileNumberError }));
             dispatch(setPassword({ ...password, error: passwordError }));
+            console.log(dobError)
+            dispatch(setDateOfBirth({ ...dateOfBirth, error: dobError }));
             return;
         }
 
@@ -95,7 +97,7 @@ export const SignUpScreen = ({ navigation }: any) => {
             emailValue: email.value,
             mobileValue: mobileNumber.value,
             passwordValue: password.value,
-            dateOfBirth: date.toISOString().split('T')[0],
+            dateOfBirth: dateOfBirth.value,
         };
         dispatch(register(payload));
     };
@@ -219,7 +221,7 @@ export const SignUpScreen = ({ navigation }: any) => {
                     </View>
                 </View>
                 {/* Date Picker */}
-                <View style={{
+                {/* <View style={{
                     width: '100%',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
@@ -240,6 +242,19 @@ export const SignUpScreen = ({ navigation }: any) => {
                             onChange={handleDateChange}
                         />
                     )}
+                </View> */}
+
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Date of birth</Text>
+                    <TextInput
+                        placeholder="MM/DD/YYYY" // Hint format
+                        returnKeyType="done"
+                        value={dateOfBirth.value}
+                        onChangeText={(text: string) => dispatch(setDateOfBirth({ value: text, error: '' }))}
+                        error={!!dateOfBirth.error}
+                        errorText={dateOfBirth.error}
+                        keyboardType="numeric"
+                    />
                 </View>
                 {/* Sign Up Button */}
                 <CenteredButton

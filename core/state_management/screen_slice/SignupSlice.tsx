@@ -6,7 +6,7 @@ interface LoginScreenState {
     mobileNumber: { value: string, error: string }
     password: { value: string, error: string };
     showPassword: boolean;
-    dateOfBirth: string;
+    dateOfBirth: { value: string, error: string };
     registrationType: string;
     showDatePicker: boolean;
     dialog: { visible: boolean, message: string, type: 'error' | 'info' | 'success' };
@@ -18,7 +18,7 @@ const initialState: LoginScreenState = {
     mobileNumber: { value: '', error: '' },
     password: { value: '', error: '' },
     showPassword: false,
-    dateOfBirth: '',
+    dateOfBirth: { value: '', error: '' },
     registrationType: 'email', // default type
     showDatePicker: false,
     dialog: { visible: false, message: '', type: 'info' },

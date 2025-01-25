@@ -61,7 +61,7 @@ export const ProductsScreen = ({ route, navigation }: any) => {
                 index={index}
                 animationValue={animationValue} // Pass individual animation value to the card
                 onPressed={(item: any) => {
-                    navigation.navigate('ProductDetails', { product: item });
+                    navigation.navigate('ProductDetails', { product: item, productName: productName });
                 }}
             />
         );

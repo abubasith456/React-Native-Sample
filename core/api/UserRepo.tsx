@@ -2,9 +2,10 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Platform } from 'react-native';
 import * as FileSystem from 'expo-file-system';
+import { APP_NAME } from '../../constants/AppConstants';
 
 
-const BASE_URL = "https://hayat-shop.onrender.com"
+const BASE_URL = "http://localhost:4000/api/v1"
 const axiosInstance = axios.create({ baseURL: BASE_URL })
 
 export const login = createAsyncThunk<any, { emailData: string, passwordData: string, googleToken: string | null }>(
@@ -143,9 +144,15 @@ export const fetchProducts = createAsyncThunk(
     'productSearch',
     async (payload, { rejectWithValue }) => {
         try {
-            const categories = ['vegetables', 'fruits', 'grocery', 'dairy', 'personalCare', 'healthCare', 'babyItems'];
+            console.log("productSearch: ")
+            let categories = []
+            if (APP_NAME.includes("Musfi")) {
+                categories = ['hijabs']
+            } else {
+                categories = [, 'vegetables', 'fruits', 'grocery', 'dairy', 'personalCare', 'healthCare', 'babyItems'];
+            }
             const apiCalls = categories.map((category) =>
-                axiosInstance.get(`${BASE_URL}/${category}`)
+                axiosInstance.get("/" + category)
             );
             const results = await Promise.all(apiCalls);
             const combinedResults = results.flatMap((response) => response.data);

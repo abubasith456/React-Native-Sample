@@ -8,6 +8,7 @@ import SignupSlice from './screen_slice/SignupSlice';
 import loginSlice from './api_slice/LoginSlice';
 import registerSlice from './api_slice/SignInSlice';
 import productsSlice from './api_slice/ProductsSlice';
+import OrderHistorySlice from './api_slice/OrderHistorySlice';
 
 export const store = configureStore({
     reducer: {
@@ -20,7 +21,8 @@ export const store = configureStore({
         profileApi: ProfileSlice,
         homeApi: HomeSlice,
         productSearch: SearchProductSlice,
-        productsApi: productsSlice
+        productsApi: productsSlice,
+        orderHistoryApi: OrderHistorySlice
     }
 });
 

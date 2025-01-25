@@ -1,4 +1,5 @@
-import { Animated, TouchableOpacity, View, Text, StyleSheet } from "react-native"
+import { Animated, TouchableOpacity, View, Text, StyleSheet, PixelRatio, Dimensions } from "react-native"
+const { height } = Dimensions.get("window");
 
 
 export const DetailsBodyContainer = ({
@@ -66,9 +67,10 @@ export const DetailsBodyContainer = ({
 
 const styles = StyleSheet.create({
     detailsContainer: {
+        height: 600,
         backgroundColor: '#fff',
         padding: 20,
-        marginTop: -30,
+        marginTop: -height * 0.20,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         shadowColor: '#000',
@@ -81,24 +83,26 @@ const styles = StyleSheet.create({
     productContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 10
+        marginTop: 10,
+        alignItems: 'center'
     },
     productName: {
-        fontSize: 25,
+        fontSize: PixelRatio.getFontScale() * 22,
         fontWeight: 'bold',
         color: '#333',
         textAlign: 'center',
         marginBottom: 10,
     },
     productPrice: {
-        fontSize: 26,
+        fontSize: PixelRatio.getFontScale() * 24,
         fontWeight: '600',
         color: '#FF6F00',
         textAlign: 'center',
-        marginBottom: 20,
+        marginBottom: 10,
     },
     productTitle: {
         fontSize: 18,
+        fontWeight: '600',
         color: 'black',
     },
     productDescription: {

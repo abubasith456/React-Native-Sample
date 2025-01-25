@@ -21,7 +21,7 @@ const AnimatedCard = ({ item, index, animationValue, onPressed }: { item: any, i
     return (
         <Animated.View style={[styles.cardContainer, animationStyle]}>
             <TouchableOpacity style={styles.card} onPress={onCardPressed}>
-                <Image source={{ uri: item.image }} style={styles.productImage} />
+                <Image resizeMode="contain" source={{ uri: !item.image ? item.images[0] : item.image }} style={styles.productImage} />
                 <View style={styles.textContainer}>
                     <Text style={styles.productName}>{item.name}</Text>
                     <Text style={styles.productPrice}>Rs.{item.price}</Text>

@@ -9,8 +9,10 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@dotlottie/react-player": "^1.6.19",
     "@expo/vector-icons": "^14.0.4",
     "@gorhom/bottom-sheet": "^5.0.6",
+    "@lottiefiles/dotlottie-react": "^0.6.5",
     "@react-native-community/datetimepicker": "^8.2.0",
     "@react-native-google-signin/google-signin": "^13.1.0",
     "@react-native-picker/picker": "^2.10.2",
@@ -46,6 +48,8 @@
     "react-native-screens": "^4.4.0",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-status-bar-height": "^2.6.0",
+    "react-native-web": "~0.19.13",
+    "react-native-web-lottie": "^1.4.4",
     "react-redux": "^9.2.0"
   },
   "devDependencies": {

@@ -7,7 +7,8 @@ export type Category =
     | 'healthcares'
     | 'driednoodles'
     | 'babyitems'
-    | 'personalcares';
+    | 'personalcares'
+    | 'hijabs';
 
 // Define the quantityOptions object with typing
 export const quantityOptions: Record<Category, (string | number)[]> = {
@@ -19,6 +20,7 @@ export const quantityOptions: Record<Category, (string | number)[]> = {
     driednoodles: ['100g', '200g'],
     babyitems: [1],
     personalcares: [1],
+    hijabs: [1],
 };
 
 // Define the Product interface
@@ -41,6 +43,7 @@ export const getUnitForCategory = (category: any) => {
         case 'driednoodles':
         case 'babyitem':
         case 'personalcares':
+        case 'hijabs':
             return 'count';
         default:
             return '';

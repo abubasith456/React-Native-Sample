@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, View, Image, Text } from "react-native"
+import { StyleSheet, View, Image } from "react-native"
 import FastImage from 'react-native-fast-image';
 
 export const HeaderIcon = ({ headerIconUrl, isBackButtonNeeded, onBackButtonPress }: any) => {

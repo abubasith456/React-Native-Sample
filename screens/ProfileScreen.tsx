@@ -14,6 +14,7 @@ export const ProfileScreen = ({ navigation }: any) => {
     const dispatch = useAppDispatch();
     const { data }
         = useAppSelector((state: RootState) => state.profileApi);
+    let userId = ""
 
     useEffect(() => {
         handleRetrieve();
@@ -21,7 +22,7 @@ export const ProfileScreen = ({ navigation }: any) => {
 
     const handleRetrieve = async () => {
         const retrievedData = await getUserData();
-        const userId = retrievedData?.user_id
+        userId = retrievedData?.user_id
         dispatch(fetchProfile({ userId }))
     }
 
@@ -46,8 +47,8 @@ export const ProfileScreen = ({ navigation }: any) => {
             {/* Profile Bottom Content */}
             <ProfileContent onMenuItemPressed={(item: any) => {
                 console.log(item)
-                if (item.id == 2) {
-                    navigation.navigate("EditProfile", { profileData: data });
+                if (item.screenName != '') {
+                    navigation.navigate(item.screenName, { userId: userId, profileData: data });
                 }
             }} />
             {/* Logout Button */}

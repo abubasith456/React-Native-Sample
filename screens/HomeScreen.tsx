@@ -51,7 +51,8 @@ export const HomeScreen = ({ navigation, route }: any) => {
         <TouchableOpacity style={styles.categoryItem} onPress={() => {
             navigation.navigate("Products", { productName: item.link });
         }}>
-            <Image source={{ uri: item.image }} style={styles.categoryIcon} />
+            <Image source={{ uri: item.image }}
+                style={styles.categoryIcon} />
             <Text style={styles.categoryName}>{item.name}</Text>
         </TouchableOpacity>
     );
@@ -187,6 +188,7 @@ const styles = StyleSheet.create({
         height: 70,
         borderRadius: 35,
         marginBottom: 5,
+        padding: 10
     },
     categoryName: {
         fontSize: 14,

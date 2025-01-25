@@ -10,7 +10,11 @@ import { DetailsImageView } from '../components/details_components/DetailsImageV
 import { DetailsBottomButton } from '../components/details_components/DetailsBottomButton';
 
 const ProductDetails = ({ route, navigation }: any) => {
-    const { product } = route.params; // Product data passed from navigation
+    const { product, productName } = route.params; // Product data passed from navigation
+    console.log("product: ", product)
+    if (!product || !product.category) {
+        product.category = productName || 'defaultCategory';  // Fallback if no productName
+    }
     const prod = product as ProductDetailsModel
     // State to control modal visibility
     const [modalVisible, setModalVisible] = useState(false);
@@ -37,8 +41,10 @@ const ProductDetails = ({ route, navigation }: any) => {
         }
     };
 
+    const categoryOptions = quantityOptions[prod.category] || [];
+
     const [selectedQuantity, setSelectedQuantity] = useState<string | number>(
-        quantityOptions[prod.category][0]
+        categoryOptions.length > 0 ? categoryOptions[0] : 0 // Fallback to 0 if no options
     );
 
     const handleSelectQuantity = (value: any) => {
