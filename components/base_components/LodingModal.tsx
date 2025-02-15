@@ -12,6 +12,9 @@ interface LoadingModalProps {
 }
 
 const LoadingModal: React.FC<LoadingModalProps> = ({ isVisible, type = 'normal' }) => {
+
+    console.log("LoadingModal called!.....: ", isVisible)
+
     let path = require('../../assets/loadingJSON.json')
     if (type == 'home') {
         path = require('../../assets/homeLoadingJSON.json')

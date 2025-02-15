@@ -38,7 +38,9 @@ export const HomeScreen = ({ navigation, route }: any) => {
                 console.log(errorMessage)
             }
         }
-        handleRetrieve()
+        if (!data) {  // 🚀 Only call API if data is empty
+            handleRetrieve();
+        }
     }, []);
 
     //TODO: will change this to route navigation data
@@ -85,11 +87,11 @@ export const HomeScreen = ({ navigation, route }: any) => {
         const responseLength = response?.length || 0;
         return response && responseLength > 0 ? response[responseLength - 1].products : recentPurchasesData[0].products;
     }
-
+    console.log("SPECIAL LOG: ==> ", loading)
     return (
         <View style={styles.container}>
             {/* Loader */}
-            <LoadingModal isVisible={loading} type="home" />
+            {loading && !data && <LoadingModal isVisible={true} type="home" />}
             {/* Header */}
             <HomeHeader
                 profilePicUrl={userData?.profilePic}

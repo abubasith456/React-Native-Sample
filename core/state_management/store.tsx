@@ -9,7 +9,7 @@ import loginSlice from './api_slice/LoginSlice';
 import registerSlice from './api_slice/SignInSlice';
 import productsSlice from './api_slice/ProductsSlice';
 import OrderHistorySlice from './api_slice/OrderHistorySlice';
-import CartSlice from './screen_slice/Cart'
+import CartSlice from './screen_slice/CartSlice'
 
 export const store = configureStore({
     reducer: {

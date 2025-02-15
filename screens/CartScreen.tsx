@@ -1,208 +1,81 @@
-// screens/CartScreen.tsx
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { RootState, useAppDispatch, useAppSelector } from "../core/state_management/store";
-import { addItem, removeItem, clearCart, CartItem } from '../core/state_management/screen_slice/Cart';
-import { getCartItems, saveCartItems } from '../core/local_storage/LocalStorage';
-import { GlobalStyle } from '../constants/styles';
+import React from "react";
+import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../core/state_management/store";
+import { updateQuantity, removeItem } from "../core/state_management/screen_slice/CartSlice";
+import { Ionicons } from "@expo/vector-icons";
+import { BaseView } from "../components/base_components/BaseView";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const CartScreen = ({ navigation }: any) => {
-    const [cartItems, setCartItems] = useState<CartItem[] | null>(null);
-    const [userId, setUserId] = useState("");
-    // const dispatch = useDispatch();
-    const [visible, setVisible] = useState(false);
-    // const { data, isLoader, isError } = useSelector(state => state.placeOrder);
+const CartScreen: React.FC = () => {
+    const cartItems = useSelector((state: RootState) => state.cart.items);
+    const dispatch = useDispatch();
 
-    useEffect(() => {
-        // Load cart items when the component mounts
-        loadCartItems();
-
-        // if (data != null) {
-        //     console.log(" DATA not NUlol ==> " + JSON.stringify(data));
-        //     if (data.success) {
-        //         dispatch(resetPlaceOrderState());
-        //         deleteAllCartItems();
-        //         setCartItems([]);
-        //         showConfirmationAlert(
-        //             'Success!',
-        //             'Order placed succesfully.',
-        //             "OK",
-        //             "",
-        //             () => {
-        //                 loadCartItems();
-        //             },
-        //             () => { }
-        //         );
-        //     } else if (isError) {
-
-        //     }
-        // }
-
-    }, []);
-
-    const isCartItem = (item: any): item is CartItem => {
-        return (
-            item &&
-            typeof item.id === 'number' &&
-            typeof item.name === 'string' &&
-            typeof item.price === 'number' &&
-            typeof item.image === 'string' &&
-            typeof item.quantity === 'number'
-        );
+    const getTotal = () => {
+        return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
     };
-
-    const loadCartItems = async () => {
-        const storedCartItems = await getCartItems();
-        if (storedCartItems) {
-            // Filter out invalid items that don't match CartItem type
-            const validItems = storedCartItems.filter(isCartItem);
-            setCartItems(validItems);
-        } else {
-            setCartItems([]);
-        }
-    };
-
-    const handleDeleteItem = (id: string) => {
-
-    };
-
-    const handlePlaceOrder = () => {
-        const orders = {
-            "unique_id": userId,
-            "numOfItems": 0,
-            "user_id": userId,
-            "user_name": "Test",
-            "products": cartItems,
-            "amount": 10000,
-        }
-        navigation.navigate('OrderSummery', {
-            cartItems: orders
-        });
-        // showConfirmationAlert(
-        //     'Place Order',
-        //     'Are you sure you want to place the order?',
-        //     "Yes",
-        //     "NO",
-        //     () => {
-        //         const orders = {
-        //             "unique_id": userId,
-        //             "numOfItems": cartItems.length,
-        //             "user_id": userId,
-        //             "user_name": "Abu",
-        //             "products": cartItems,
-        //             "amount": 10000,
-        //             "address": "kjascakjsbcjksa"
-        //         }
-
-
-        //         // dispatch(placeOrder({ orders: orders }));
-        //     },
-        //     () => { }
-        // );
-    };
-
-    const renderItem = ({ item }: any) => (
-        <View style={styles.itemContainer}>
-            <Image source={{ uri: item.productImage }} style={styles.itemImage} />
-            <View style={styles.itemDetails}>
-                <Text style={styles.itemName}>{item.productName}</Text>
-                <Text style={styles.itemQuantity}>Quantity: {item.quantity}</Text>
-                <TouchableOpacity onPress={() => handleDeleteItem(item.id)} style={styles.deleteButton}>
-                    <Text style={styles.deleteButtonText}>Delete</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-    );
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <Text style={styles.title}>Shopping Cart</Text>
 
-            {cartItems?.length == 0 ?
-                <View style={styles.noItemText}>
-                    <Text style={{ color: "black" }}> No items added yet!</Text>
-                </View> : null
-            }
+            {cartItems.length === 0 ? (
+                <Text style={styles.emptyText}>Your cart is empty</Text>
+            ) : (
+                <FlatList
+                    data={cartItems}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => (
+                        <View style={styles.itemContainer}>
+                            <Image source={{ uri: item.image }} style={styles.image} />
+                            <View style={styles.details}>
+                                <Text style={styles.itemName}>{item.name}</Text>
+                                <Text style={styles.price}>${item.price.toFixed(2)}</Text>
+                                <View style={styles.quantityContainer}>
+                                    <TouchableOpacity onPress={() => dispatch(updateQuantity({ id: item.id, type: "decrease" }))}>
+                                        <Ionicons name="arrow-back" size={24} color="gray" />
+                                    </TouchableOpacity>
+                                    <Text style={styles.quantity}>{item.quantity}</Text>
+                                    <TouchableOpacity onPress={() => dispatch(updateQuantity({ id: item.id, type: "increase" }))}>
+                                        <Ionicons name="arrow-back" size={24} color="green" />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <TouchableOpacity onPress={() => dispatch(removeItem(item.id))}>
+                                <Ionicons name="arrow-back" size={24} color="red" />
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                />
+            )}
 
-            {cartItems?.length !== 0 ? <FlatList
-                data={cartItems}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={renderItem}
-            /> : null}
-            {cartItems?.length !== 0 ? <TouchableOpacity onPress={handlePlaceOrder} style={styles.placeOrderButton}>
-                <Text style={styles.placeOrderButtonText}>Place Order</Text>
-            </TouchableOpacity> : null}
-        </View>
+            {cartItems.length > 0 && (
+                <View style={styles.footer}>
+                    <Text style={styles.totalText}>Total: ${getTotal()}</Text>
+                    <TouchableOpacity style={styles.checkoutButton}>
+                        <Text style={styles.checkoutText}>Proceed to Checkout</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
+        </SafeAreaView>
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-        backgroundColor: '#f0f0f0',
-    },
-    headerText: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 16,
-    },
-    noItemText: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-
-    },
-    itemContainer: {
-        flexDirection: 'row',
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        marginBottom: 12,
-        padding: 12,
-        alignItems: 'center',
-    },
-    itemImage: {
-        width: 80,
-        height: 80,
-        borderRadius: 8,
-        marginRight: 12,
-    },
-    itemDetails: {
-        flex: 1,
-    },
-    itemName: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 4,
-        color: GlobalStyle.primaryColor,
-    },
-    itemQuantity: {
-        fontSize: 16,
-        color: '#666',
-        marginBottom: 8,
-    },
-    deleteButton: {
-        backgroundColor: 'red',
-        padding: 8,
-        borderRadius: 4,
-        alignItems: 'center',
-    },
-    deleteButtonText: {
-        color: '#fff',
-    },
-    placeOrderButton: {
-        backgroundColor: 'green',
-        padding: 16,
-        borderRadius: 8,
-        alignItems: 'center',
-        marginTop: 16,
-
-    },
-    placeOrderButtonText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'normal',
-    },
-});
-
 export default CartScreen;
+
+const styles = StyleSheet.create({
+    container: { flex: 1, backgroundColor: "#fff", padding: 16 },
+    title: { fontSize: 24, fontWeight: "bold", textAlign: "center", marginBottom: 16 },
+    emptyText: { textAlign: "center", color: "gray", marginTop: 20 },
+    itemContainer: { flexDirection: "row", alignItems: "center", backgroundColor: "#f8f8f8", padding: 12, borderRadius: 10, marginBottom: 10 },
+    image: { width: 60, height: 60, borderRadius: 10 },
+    details: { flex: 1, marginLeft: 12 },
+    itemName: { fontSize: 16, fontWeight: "600" },
+    price: { color: "gray" },
+    quantityContainer: { flexDirection: "row", alignItems: "center", marginTop: 6 },
+    quantity: { fontSize: 16, fontWeight: "600", marginHorizontal: 8 },
+    footer: { marginTop: 20, padding: 16, backgroundColor: "#eaeaea", borderRadius: 10 },
+    totalText: { fontSize: 18, fontWeight: "bold" },
+    checkoutButton: { marginTop: 10, backgroundColor: "#28a745", padding: 12, borderRadius: 10 },
+    checkoutText: { textAlign: "center", color: "white", fontSize: 16, fontWeight: "bold" },
+});
