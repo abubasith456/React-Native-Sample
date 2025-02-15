@@ -17,6 +17,8 @@
       "bundleIdentifier": "com.musfi.dev"
     },
     "android": {
+      "googleServicesFile": "./assets/google-services.json",
+      "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo-no-background.png",
         "backgroundColor": "#070738"
@@ -28,6 +30,16 @@
         "projectId": "67a0e5a4-022c-4e87-b694-c3ad191fa0e6"
       }
     },
-    "owner": "mohamedabu.basith"
+    "owner": "mohamedabu.basith",
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "kotlinVersion": "1.9.24"
+          }
+        }
+      ]
+    ]
   }
 }
