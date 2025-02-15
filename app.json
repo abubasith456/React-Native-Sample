@@ -23,7 +23,12 @@
         "foregroundImage": "./assets/logo-no-background.png",
         "backgroundColor": "#070738"
       },
-      "package": "com.musfi.dev"
+      "package": "com.musfi.dev",
+      "config": {
+        "kotlinOptions": {
+          "jvmTarget": "17"
+        }
+      }
     },
     "extra": {
       "eas": {
