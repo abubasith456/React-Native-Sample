@@ -19,8 +19,8 @@ export const HeaderCard = ({ profileUrl, headerIconUrl, usernameTitle, userSubTi
 
 const styles = StyleSheet.create({
     headerCard: {
-        height: height * 0.20,
-        paddingTop: height * 0.05,
+        height: height * 0.11,
+        paddingTop: height * 0.02,
         backgroundColor: GlobalStyle.primaryColor,
         borderBottomEndRadius: 30,
         borderBottomStartRadius: 30

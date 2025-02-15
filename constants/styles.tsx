@@ -6,7 +6,8 @@ export const GlobalStyle = {
     primaryLightColor: '#87CEEB', //Will change
     primaryButtonColor: '#00BFFF',
     primaryTextColor: 'white',
-    secondaryTextColor: 'grey'
+    secondaryTextColor: 'grey',
+    splashBaseColor: "black"
 }
 
 export default {

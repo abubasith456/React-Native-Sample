@@ -32,16 +32,14 @@ export const HeaderProfile = ({ profilePicUrl, usernameTitle, userSubTitile }: a
 
 const styles = StyleSheet.create({
     profileContainer: {
-        marginHorizontal: 15,
-        marginTop: height * 0.01,
+        marginHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        padding: 5,
     },
     profilePicContainer: {
-        height: height * 0.09,
-        width: height * 0.09,
+        height: height * 0.07,
+        width: height * 0.07,
         backgroundColor: 'white',
         borderRadius: 20,
         shadowColor: '#000', // Add a subtle shadow for effect
@@ -53,7 +51,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     profileDetailsContainer: {
-        height: 80,
         marginStart: 20,
         justifyContent: 'center',
     },

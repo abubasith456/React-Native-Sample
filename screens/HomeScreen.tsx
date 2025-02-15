@@ -5,7 +5,6 @@ import {
     ScrollView,
     FlatList,
     Image,
-    Alert,
     TouchableOpacity,
 } from "react-native"
 import { RootState, useAppDispatch, useAppSelector } from "../core/state_management/store";
@@ -16,6 +15,7 @@ import { HomeBanner } from "../components/home_components/HomeBanner";
 import { categoriesData, productsData, recentPurchasesData } from "../constants/ApiSampleResponse";
 import LoadingModal from "../components/base_components/LodingModal";
 import { getUserData } from "../core/local_storage/LocalStorage";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export const HomeScreen = ({ navigation, route }: any) => {
     console.log("navigation data =>", navigation)
@@ -89,7 +89,7 @@ export const HomeScreen = ({ navigation, route }: any) => {
     }
     console.log("SPECIAL LOG: ==> ", loading)
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {/* Loader */}
             {loading && !data && <LoadingModal isVisible={true} type="home" />}
             {/* Header */}
@@ -144,7 +144,7 @@ export const HomeScreen = ({ navigation, route }: any) => {
                     />
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 };
 

@@ -36,8 +36,8 @@ export const HomeHeader = ({ profilePicUrl, userName, searchOnPressed }: any) =>
 const styles = StyleSheet.create({
     headerCard: {
         width: "100%",
-        height: height * 0.17,
-        paddingTop: height * 0.08,
+        height: height * 0.11,
+        paddingTop: height * 0.02,
         backgroundColor: GlobalStyle.primaryColor,
         borderBottomEndRadius: 30,
         borderBottomStartRadius: 30
@@ -46,14 +46,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginHorizontal: 20
+        marginHorizontal: 20,
+        borderBottomEndRadius: 30,
+        borderBottomStartRadius: 30
     },
     headerIcon: {
-        width: height * 0.07, // 5% of screen height
         height: height * 0.07,
-        resizeMode: 'contain', // Keep aspect ratio
-        alignSelf: 'center',
-        borderRadius: 30
+        width: height * 0.07,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        shadowColor: '#000', // Add a subtle shadow for effect
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+        elevation: 5,
+        justifyContent: 'center',
+        alignSelf: 'center'
     },
     headerTextContainer: {
         width: "70%",

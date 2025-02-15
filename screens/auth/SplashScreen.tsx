@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import { View, Image, StyleSheet, Animated } from "react-native";
+import { View, Image, StyleSheet, Animated, StatusBar } from "react-native";
 import { getUserData } from "../../core/local_storage/LocalStorage";
 import { StackActions } from "@react-navigation/native";
 import { APP_NAME } from "../../constants/AppConstants";
+import { GlobalStyle } from "../../constants/styles";
 
 export const SplashScreen = ({ navigation }: any) => {
     const scaleAnim = useRef(new Animated.Value(0)).current; // Initial scale is 0
@@ -47,6 +48,7 @@ export const SplashScreen = ({ navigation }: any) => {
 
     return (
         <View style={styles.container}>
+            <StatusBar barStyle="dark-content" backgroundColor={GlobalStyle.splashBaseColor} />
             <Animated.View
                 style={[
                     styles.imageContainer,

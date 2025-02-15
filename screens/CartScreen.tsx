@@ -1,11 +1,13 @@
 import React from "react";
-import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet, StatusBar } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../core/state_management/store";
 import { updateQuantity, removeItem } from "../core/state_management/screen_slice/CartSlice";
 import { Ionicons } from "@expo/vector-icons";
 import { BaseView } from "../components/base_components/BaseView";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { GlobalStyle } from "../constants/styles";
+import { HeaderCard } from "../components/cart_components/HeaderCard";
 
 const CartScreen: React.FC = () => {
     const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -17,7 +19,8 @@ const CartScreen: React.FC = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Shopping Cart</Text>
+            <StatusBar barStyle="dark-content" backgroundColor={GlobalStyle.primaryColor} />
+            <HeaderCard />
 
             {cartItems.length === 0 ? (
                 <Text style={styles.emptyText}>Your cart is empty</Text>
@@ -64,8 +67,7 @@ const CartScreen: React.FC = () => {
 export default CartScreen;
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: "#fff", padding: 16 },
-    title: { fontSize: 24, fontWeight: "bold", textAlign: "center", marginBottom: 16 },
+    container: { flex: 1, backgroundColor: "#fff" },
     emptyText: { textAlign: "center", color: "gray", marginTop: 20 },
     itemContainer: { flexDirection: "row", alignItems: "center", backgroundColor: "#f8f8f8", padding: 12, borderRadius: 10, marginBottom: 10 },
     image: { width: 60, height: 60, borderRadius: 10 },

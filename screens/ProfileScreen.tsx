@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { StatusBar, View } from "react-native";
 import { useEffect, useState } from "react";
 import { HeaderCard } from "../components/profile_component/headerCard/HeaderCard";
 import { ProfileContent } from "../components/profile_component/ProfileContent/ProfileContent";
@@ -6,6 +6,7 @@ import { ButtonBottomLogout } from "../components/profile_component/ProfileConte
 import { fetchProfile } from "../core/api/UserRepo";
 import { RootState, resetState, useAppDispatch, useAppSelector } from "../core/state_management/store";
 import { deleteUserData, getUserData } from "../core/local_storage/LocalStorage";
+import { GlobalStyle } from "../constants/styles";
 
 const headerIconUrl: string = "";
 const profilePic = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8UDpyRVcLyyOViNVGvvk-TRAbmWfif0nemg&s";
@@ -42,11 +43,12 @@ export const ProfileScreen = ({ navigation }: any) => {
 
     return (
         <View style={{ flex: 1 }}>
+            <StatusBar barStyle="dark-content" backgroundColor={GlobalStyle.primaryColor} />
             {/* Profile Header Content */}
             <HeaderCard
                 usernameTitle={data?.username}
                 userSubTitile={data?.email}
-                profileUrl={data?.profilePic || profilePic} // 🔥 Fallback to default profile image
+                profileUrl={data?.profilePic || profilePic}
                 headerIconUrl={headerIconUrl}
                 backPressNeeded={false}
                 onBackButtonPress={() => navigation.goBack()}
