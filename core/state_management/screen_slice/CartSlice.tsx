@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CartItem } from "../../../model/CartItemModel";  // Ensure correct import
 
 interface CartState {
@@ -12,24 +12,25 @@ const initialState: CartState = {
 
 // Save to AsyncStorage
 const saveCartToStorage = async (cartItems: CartItem[]) => {
-    try {
-        await AsyncStorage.setItem("cart", JSON.stringify(cartItems));
-        console.log("Cart added!...");
-    } catch (error) {
-        console.error("Error saving cart data:", error);
-    }
+    // try {
+    //     await AsyncStorage.setItem("cart", JSON.stringify(cartItems));
+    //     console.log("Cart added!...");
+    // } catch (error) {
+    //     console.error("Error saving cart data:", error);
+    // }
 };
 
 // Load from AsyncStorage
 export const loadCartFromStorage = async (): Promise<CartItem[]> => {
-    try {
-        const storedCart = await AsyncStorage.getItem("cart");
-        console.log("Cart loaded!...");
-        return storedCart ? JSON.parse(storedCart) : [];
-    } catch (error) {
-        console.error("Error loading cart data:", error);
-        return [];
-    }
+    // try {
+    //     const storedCart = await AsyncStorage.getItem("cart");
+    //     console.log("Cart loaded!...");
+    //     return storedCart ? JSON.parse(storedCart) : [];
+    // } catch (error) {
+    //     console.error("Error loading cart data:", error);
+    //     return [];
+    // }
+    return [];
 };
 
 const cartSlice = createSlice({

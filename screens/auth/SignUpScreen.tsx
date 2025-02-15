@@ -247,7 +247,7 @@ export const SignUpScreen = ({ navigation }: any) => {
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Date of birth</Text>
                     <TextInput
-                        placeholder="MM/DD/YYYY" // Hint format
+                        placeholder="MM-DD-YYYY" // Hint format
                         returnKeyType="done"
                         value={dateOfBirth.value}
                         onChangeText={(text: string) => dispatch(setDateOfBirth({ value: text, error: '' }))}

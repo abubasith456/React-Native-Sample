@@ -17,35 +17,17 @@
       "bundleIdentifier": "com.musfi.dev"
     },
     "android": {
-      "googleServicesFile": "./assets/google-services.json",
-      "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo-no-background.png",
         "backgroundColor": "#070738"
       },
-      "package": "com.musfi.dev",
-      "config": {
-        "kotlinVersion": "1.9.25",
-        "kotlinOptions": {
-          "jvmTarget": "18"
-        }
-      }
+      "package": "com.musfi.dev"
     },
     "extra": {
       "eas": {
         "projectId": "67a0e5a4-022c-4e87-b694-c3ad191fa0e6"
       }
     },
-    "owner": "mohamedabu.basith",
-    "plugins": [
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "kotlinVersion": "1.9.25"
-          }
-        }
-      ]
-    ]
+    "owner": "mohamedabu.basith"
   }
 }
