@@ -45,7 +45,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:178045166210:android:d8669e8528bc1d67fa4a9b",
         "android_client_info": {
-          "package_name": "com.hayat.dev"
+          "package_name": "com.musfi.dev"
         }
       },
       "oauth_client": [
@@ -70,7 +70,7 @@
               "client_id": "178045166210-brsqnudoeppkkg166pd38kjr7kaf2v8l.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.eCommerceApp"
+                "bundle_id": "com.musfi.dev"
               }
             }
           ]
