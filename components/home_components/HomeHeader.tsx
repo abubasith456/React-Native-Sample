@@ -4,6 +4,7 @@ import { Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 const { height } = Dimensions.get("window");
+const profilePic = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8UDpyRVcLyyOViNVGvvk-TRAbmWfif0nemg&s";
 
 export const HomeHeader = ({ profilePicUrl, userName, searchOnPressed }: any) => {
     console.log(" ==> ", profilePicUrl);
@@ -12,17 +13,12 @@ export const HomeHeader = ({ profilePicUrl, userName, searchOnPressed }: any) =>
     return (
         <View style={styles.headerCard}>
             <View style={styles.headerInnerContainer}>
-                {
-                    isProfilePicUrlAvailable ? <Image
-                        source={{ uri: profilePicUrl }}
-                        resizeMethod="resize" // Resizes image before rendering
-                        resizeMode="contain"
-                        style={styles.headerIcon}
-                    /> : <Image
-                        source={require('../../assets/favicon.png')}
-                        style={styles.headerIcon}
-                    />
-                }
+                <Image
+                    source={{ uri: profilePicUrl || profilePic }}
+                    resizeMethod="resize" // Resizes image before rendering
+                    resizeMode="contain"
+                    style={styles.headerIcon}
+                />
                 <View style={styles.headerTextContainer} >
                     {isuserNameAvailable ?
                         <Text style={styles.text} ellipsizeMode="tail" numberOfLines={1}>Hai, {userName}</Text> :
