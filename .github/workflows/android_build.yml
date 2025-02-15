@@ -18,6 +18,12 @@ jobs:
         java-version: 18
         distribution: 'temurin' 
 
+    - name: Install Kotlin 1.9.25
+      run: |
+        curl -sSLO https://github.com/JetBrains/kotlin/releases/download/v1.9.25/kotlin-compiler-1.9.25.zip
+        unzip kotlin-compiler-1.9.25.zip
+        echo "$PWD/kotlinc/bin" >> $GITHUB_PATH
+
     - name: Install Node.js and npm
       uses: actions/setup-node@v3
       with:
