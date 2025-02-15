@@ -4,7 +4,7 @@ import { HeaderCard } from "../components/profile_component/headerCard/HeaderCar
 import { ProfileContent } from "../components/profile_component/ProfileContent/ProfileContent";
 import { ButtonBottomLogout } from "../components/profile_component/ProfileContent/ButtonBottomLogout";
 import { fetchProfile } from "../core/api/UserRepo";
-import { RootState, useAppDispatch, useAppSelector } from "../core/state_management/store";
+import { RootState, resetState, useAppDispatch, useAppSelector } from "../core/state_management/store";
 import { deleteUserData, getUserData } from "../core/local_storage/LocalStorage";
 
 const headerIconUrl: string = "";
@@ -13,7 +13,7 @@ const profilePic = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8UDpy
 export const ProfileScreen = ({ navigation }: any) => {
     const dispatch = useAppDispatch();
     const { data } = useAppSelector((state: RootState) => state.profileApi);
-    
+
     // 🔥 Store userId in state
     const [userId, setUserId] = useState("");
 
@@ -33,6 +33,7 @@ export const ProfileScreen = ({ navigation }: any) => {
 
     const handleDelete = async () => {
         await deleteUserData();
+        dispatch(resetState());
         navigation.reset({
             index: 0,
             routes: [{ name: "Login" }],
