@@ -27,11 +27,6 @@ jobs:
       run: |
         npm install
 
-    - name: Clean and Rebuild
-      run: |
-        npx expo clean
-        npx expo start --clear
-
     - name: Expo Prebuild
       run: |
         npx expo prebuild -p android
