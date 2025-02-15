@@ -30,6 +30,14 @@
         "projectId": "67a0e5a4-022c-4e87-b694-c3ad191fa0e6"
       }
     },
-    "owner": "mohamedabu.basith"
+    "owner": "mohamedabu.basith",
+    "plugins": [
+      "expo-build-properties",
+      {
+        "android": {
+          "kotlinVersion": "1.9.25"
+        }
+      }
+    ]
   }
 }
