@@ -25,6 +25,7 @@
       },
       "package": "com.musfi.dev",
       "config": {
+        "kotlinVersion": "1.9.25",
         "kotlinOptions": {
           "jvmTarget": "17"
         }
