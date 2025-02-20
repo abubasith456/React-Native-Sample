@@ -4,7 +4,7 @@ export const GlobalStyle = {
     ...DefaultTheme.colors,
     primaryColor: '#7373ff',
     primaryLightColor: '#87CEEB', //Will change
-    primaryButtonColor: '#00BFFF',
+    primaryButtonColor: '#7373ff',
     primaryTextColor: 'white',
     secondaryTextColor: 'grey',
     splashBaseColor: "black"

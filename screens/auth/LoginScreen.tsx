@@ -83,7 +83,9 @@ export const LoginScreen = ({ navigation }: any) => {
     return (
         <BaseView>
             {/* Modal with Custom loader */}
-            <LoadingModal isVisible={isLoader} type="normal" />
+            <View style={{ flex: 1 }}>
+                <LoadingModal isVisible={isLoader} type="normal" />
+            </View>
             <CustomMessageDialog
                 isVisible={dialog.visible}
                 message={errorMessage}

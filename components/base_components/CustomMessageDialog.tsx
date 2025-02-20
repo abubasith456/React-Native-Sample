@@ -36,7 +36,16 @@ const CustomMessageDialog: React.FC<CustomMessageDialogProps> = ({
             animationType="fade"
             transparent={true}
             visible={isVisible}
+            statusBarTranslucent={true}
+            hardwareAccelerated={true}
+            presentationStyle="fullScreen"
             onRequestClose={onClose}
+            style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignContent: 'center'
+            }}
         >
             <View style={styles.modalOverlay}>
                 <View style={styles.dialogContainer}>

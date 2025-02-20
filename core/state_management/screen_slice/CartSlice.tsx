@@ -7,7 +7,12 @@ interface CartState {
 }
 
 const initialState: CartState = {
-    items: [],
+    items: [
+        { id: '1', name: 'Bell Pepper Red', quantity: 1, price: 4.99, image: "" },
+        { id: '2', name: 'Egg Chicken Red', quantity: 1, price: 1.99, image: "" },
+        { id: '3', name: 'Organic Bananas', quantity: 1, price: 3.00, image: "" },
+        { id: '4', name: 'Ginger', quantity: 1, price: 2.99, image: "" },
+    ],
 };
 
 // Save to AsyncStorage
@@ -49,14 +54,14 @@ const cartSlice = createSlice({
             }
             saveCartToStorage(state.items);
         },
-        updateQuantity: (state, action: PayloadAction<{ id: number; type: "increase" | "decrease" }>) => {
+        updateQuantity: (state, action: PayloadAction<{ id: string; type: "increase" | "decrease" }>) => {
             const item = state.items.find((item) => item.id === action.payload.id);
             if (item) {
                 item.quantity = action.payload.type === "increase" ? item.quantity + 1 : Math.max(1, item.quantity - 1);
             }
             saveCartToStorage(state.items);
         },
-        removeItem: (state, action: PayloadAction<number>) => {
+        removeItem: (state, action: PayloadAction<string>) => {
             state.items = state.items.filter((item) => item.id !== action.payload);
             saveCartToStorage(state.items);
         },

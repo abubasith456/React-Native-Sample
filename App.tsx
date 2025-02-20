@@ -5,6 +5,7 @@ import { NotificationService } from './services/NotificationService';
 import { StatusBar } from 'react-native';
 import { GlobalStyle } from './constants/styles';
 
+
 export default function App() {
   return (
     <Provider store={store}>

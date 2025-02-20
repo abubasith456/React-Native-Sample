@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-const BASE_URL = "https://hayat-shop.onrender.com/api/v1"
-const axiosInstance = axios.create({ baseURL: BASE_URL })
+const BASE_URL = "https://abubasith86-hayat.hf.space/api/v1"
+const HF_URL = "https://abubasith86-hayat.hf.space/api/v1"
+const axiosInstance = axios.create({ baseURL: HF_URL })
 
 export const fetchProducts = createAsyncThunk<any, { productName: string }>(
     'productsApi',

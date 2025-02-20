@@ -23,9 +23,17 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isVisible, type = 'normal' 
     }
     return (
         <Modal
-            animationType="none"
+            animationType="fade"
             transparent={true}
             visible={isVisible}
+            statusBarTranslucent={true}
+            hardwareAccelerated={true}
+            style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignContent: 'center'
+            }}
             onRequestClose={() => { }}
         >
             <View style={styles.modalOverlay}>

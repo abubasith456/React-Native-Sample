@@ -6,6 +6,7 @@ import {
     FlatList,
     Image,
     TouchableOpacity,
+    StatusBar,
 } from "react-native"
 import { RootState, useAppDispatch, useAppSelector } from "../core/state_management/store";
 import { useEffect } from "react";
@@ -16,6 +17,13 @@ import { categoriesData, productsData, recentPurchasesData } from "../constants/
 import LoadingModal from "../components/base_components/LodingModal";
 import { getUserData } from "../core/local_storage/LocalStorage";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { GlobalStyle } from "../constants/styles";
+import ShimmerHeader from "../components/shimmering/home_shimmering/Header_shimmering";
+import ShimmerBanner from "../components/shimmering/home_shimmering/BannerShimmer";
+import ShimmerCategories from "../components/shimmering/home_shimmering/CategoryShimmer";
+import ShimmerProducts from "../components/shimmering/home_shimmering/ProductShimmer";
+import ShimmerRecentPurchases from "../components/shimmering/home_shimmering/SimilarShimmer";
+
 
 export const HomeScreen = ({ navigation, route }: any) => {
     console.log("navigation data =>", navigation)
@@ -90,58 +98,73 @@ export const HomeScreen = ({ navigation, route }: any) => {
     console.log("SPECIAL LOG: ==> ", loading)
     return (
         <SafeAreaView style={styles.container}>
-            {/* Loader */}
-            {loading && !data && <LoadingModal isVisible={true} type="home" />}
+            <StatusBar barStyle="dark-content" backgroundColor={GlobalStyle.primaryColor} />
             {/* Header */}
-            <HomeHeader
-                profilePicUrl={userData?.profilePic}
-                userName={userData?.username}
-                searchOnPressed={() => {
-                    navigation.navigate("Search");
-                }} />
+            {loading ? (
+                <ShimmerHeader />
+            ) : (
+                <HomeHeader
+                    profilePicUrl={userData?.profilePic}
+                    userName={userData?.username}
+                    searchOnPressed={() => {
+                        navigation.navigate("Search");
+                    }} />
+            )}
             {/* Scrollable Body */}
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-                <View style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
-                    <HomeBanner data={data?.data.banner} />
-                </View>
+                {/* Banner */}
+                {loading ? (
+                    <ShimmerBanner />
+                ) : (
+                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <HomeBanner data={data?.data.banner} />
+                    </View>
+                )}
                 {/* Categories Section */}
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Categories</Text>
-                    <FlatList
-                        numColumns={4}
-                        data={data?.data.categories || categoriesData}
-                        renderItem={renderCategoryItem}
-                        keyExtractor={(item) => item._id.toString()}
-                        showsHorizontalScrollIndicator={false}
-                        contentContainerStyle={styles.flatListContainer}
-                        scrollEnabled={false}
-                    />
+                    {loading ? (
+                        <ShimmerCategories />
+                    ) : (
+                        <FlatList
+                            numColumns={4}
+                            data={data?.data.categories || categoriesData}
+                            renderItem={renderCategoryItem}
+                            keyExtractor={(item) => item._id.toString()}
+                            showsHorizontalScrollIndicator={false}
+                            contentContainerStyle={styles.flatListContainer}
+                            scrollEnabled={false}
+                        />
+                    )}
                 </View>
-
                 {/* Products Section */}
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Featured Products</Text>
-                    <FlatList
-                        numColumns={2}
-                        data={featureProducts || productsData}
-                        renderItem={renderProductItem}
-                        keyExtractor={(item) => Math.random().toString()}
-                        scrollEnabled={false} // Disable FlatList scrolling inside ScrollView
-                    />
+                    {loading ? (
+                        <ShimmerProducts />
+                    ) : (
+                        <FlatList
+                            numColumns={2}
+                            data={featureProducts || productsData}
+                            renderItem={renderProductItem}
+                            keyExtractor={(item) => Math.random().toString()}
+                            scrollEnabled={false}
+                        />
+                    )}
                 </View>
-
                 {/* Recent Purchases Section */}
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Recent Purchases</Text>
-                    <FlatList
-                        data={getRecentPurchaseData()}
-                        renderItem={renderRecentPurchaseItem}
-                        keyExtractor={(item) => item._id.toString()}
-                        scrollEnabled={false} // Disable FlatList scrolling inside ScrollView
-                    />
+                    {loading ? (
+                        <ShimmerRecentPurchases />
+                    ) : (
+                        <FlatList
+                            data={getRecentPurchaseData()}
+                            renderItem={renderRecentPurchaseItem}
+                            keyExtractor={(item) => item._id.toString()}
+                            scrollEnabled={false}
+                        />
+                    )}
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -154,6 +177,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f5f5f5',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     header: {
         height: 50,

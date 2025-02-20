@@ -11,7 +11,7 @@ interface HomeState {
 
 const initialState: HomeState = {
     data: null,
-    loading: false,
+    loading: true,
     error: false,
     errorMessage: null
 };

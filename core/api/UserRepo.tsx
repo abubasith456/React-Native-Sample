@@ -6,7 +6,8 @@ import { APP_NAME } from '../../constants/AppConstants';
 
 
 const BASE_URL = "https://hayat-shop.onrender.com/api/v1"
-const axiosInstance = axios.create({ baseURL: BASE_URL })
+const HF_URL = "https://abubasith86-hayat.hf.space/api/v1"
+const axiosInstance = axios.create({ baseURL: HF_URL })
 
 export const login = createAsyncThunk<any, { emailData: string, passwordData: string, googleToken: string | null }>(
     'loginApi',
