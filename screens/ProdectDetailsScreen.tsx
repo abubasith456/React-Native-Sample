@@ -8,6 +8,9 @@ import { DetailsBodyContainer } from '../components/details_components/DetailsBo
 import { ProductDetailsModel, quantityOptions } from '../constants/ProductConstant';
 import { DetailsImageView } from '../components/details_components/DetailsImageView';
 import { DetailsBottomButton } from '../components/details_components/DetailsBottomButton';
+import { RootState, useAppDispatch, useAppSelector } from "../core/state_management/store";
+import { addItem } from '../core/state_management/screen_slice/CartSlice';
+
 
 const ProductDetails = ({ route, navigation }: any) => {
     const { product, productName } = route.params; // Product data passed from navigation
@@ -15,6 +18,7 @@ const ProductDetails = ({ route, navigation }: any) => {
         product.category = productName || 'defaultCategory';  // Fallback if no productName
     }
     const prod = product as ProductDetailsModel
+    const dispatch = useAppDispatch();
     // State to control modal visibility
     const [modalVisible, setModalVisible] = useState(false);
     // Quantity state
@@ -43,7 +47,7 @@ const ProductDetails = ({ route, navigation }: any) => {
     const categoryOptions = quantityOptions[prod.category] || [];
 
     const [selectedQuantity, setSelectedQuantity] = useState<string | number>(
-        categoryOptions.length > 0 ? categoryOptions[0] : 0 // Fallback to 0 if no options
+        categoryOptions.length > 0 ? categoryOptions[0] : 1 // Fallback to 0 if no options
     );
 
     const handleSelectQuantity = (value: any) => {
@@ -59,6 +63,20 @@ const ProductDetails = ({ route, navigation }: any) => {
             useNativeDriver: true,
         }).start();
     }, []);
+
+    const handleAddToCart = () => {
+        const cartItem = {
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            quantity: selectedQuantity as number,
+            image: product.images[0],
+        };
+        // console.log('====================================');
+        // console.log(cartItem);
+        // console.log('====================================');
+        dispatch(addItem(cartItem)); // Dispatch the addItem action
+    };
 
     return (
         <View style={styles.container}>
@@ -82,9 +100,7 @@ const ProductDetails = ({ route, navigation }: any) => {
 
             {/* Fixed Floating Action Buttons */}
             <DetailsBottomButton
-                onCartPressed={() => {
-                    alert('Proceed to Checkout')
-                }}
+                onCartPressed={handleAddToCart}
                 onBuyPressed={() => {
                     alert('Proceed to Buy')
                 }}

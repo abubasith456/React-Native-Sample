@@ -184,21 +184,27 @@ export const updateProfile = createAsyncThunk(
             // Create FormData
             const formData = new FormData();
             const imageURL = payload.image;
-
-            /* try {
+            // Check if the image URI exists
+            if (imageURL) {
                 const fileInfo = await FileSystem.getInfoAsync(imageURL);
                 if (fileInfo.exists) {
-                    var imageJSON = {
-                        imageName: payload.userId + "_profile.jpg",
-                        avatar: fileInfo.uri.toString(),
-                        filePath: fileInfo.uri.split('file://')[1]
-                    }
-                    formData.append('file', JSON.stringify(imageJSON));
+                    // Extract the file name and type
+                    const fileType = imageURL.split('.').pop(); // Get file extension
+                    const fileName = `${payload.userId}_profile.${fileType}`;
+
+                    // Append the file to FormData
+                    formData.append('file', {
+                        uri: Platform.OS === 'ios' ? imageURL.replace('file://', '') : imageURL,
+                        name: fileName,
+                        type: `image/${fileType}`,
+                    } as any); // Use `as any` to bypass TypeScript errors
+
+                    // Append metadata (e.g., filePath, imageName)
+                    const filePath = Platform.OS === 'ios' ? imageURL.replace('file://', '') : imageURL;
+                    formData.append('filePath', filePath);
+                    formData.append('imageName', fileName);
                 }
-                console.log("File exists:", fileInfo);
-            } catch (e) {
-                console.log("Error", e);
-            } */
+            }
 
             // Append other user details
             formData.append('userId', payload.userId); // Required unique_id field
@@ -211,8 +217,8 @@ export const updateProfile = createAsyncThunk(
             const response = await axiosInstance.post('/profileUpdate', formData, {
                 headers: {
                     Accept: 'application/json',
-                    'Content-Type': 'multipart/form-data'
-                }
+                    'Content-Type': 'multipart/form-data',
+                },
             });
             return response.data;
         } catch (error: any) {
@@ -224,4 +230,5 @@ export const updateProfile = createAsyncThunk(
                 return rejectWithValue(error.message);
             }
         }
-    });
+    }
+);

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CartItem } from "../../../model/CartItemModel";  // Ensure correct import
 
 interface CartState {
@@ -7,35 +7,29 @@ interface CartState {
 }
 
 const initialState: CartState = {
-    items: [
-        { id: '1', name: 'Bell Pepper Red', quantity: 1, price: 4.99, image: "" },
-        { id: '2', name: 'Egg Chicken Red', quantity: 1, price: 1.99, image: "" },
-        { id: '3', name: 'Organic Bananas', quantity: 1, price: 3.00, image: "" },
-        { id: '4', name: 'Ginger', quantity: 1, price: 2.99, image: "" },
-    ],
+    items: [],
 };
 
 // Save to AsyncStorage
 const saveCartToStorage = async (cartItems: CartItem[]) => {
-    // try {
-    //     await AsyncStorage.setItem("cart", JSON.stringify(cartItems));
-    //     console.log("Cart added!...");
-    // } catch (error) {
-    //     console.error("Error saving cart data:", error);
-    // }
+    try {
+        await AsyncStorage.setItem("cart", JSON.stringify(cartItems));
+        console.log("Cart added!...");
+    } catch (error) {
+        console.error("Error saving cart data:", error);
+    }
 };
 
 // Load from AsyncStorage
 export const loadCartFromStorage = async (): Promise<CartItem[]> => {
-    // try {
-    //     const storedCart = await AsyncStorage.getItem("cart");
-    //     console.log("Cart loaded!...");
-    //     return storedCart ? JSON.parse(storedCart) : [];
-    // } catch (error) {
-    //     console.error("Error loading cart data:", error);
-    //     return [];
-    // }
-    return [];
+    try {
+        const storedCart = await AsyncStorage.getItem("cart");
+        console.log("Cart loaded!...");
+        return storedCart ? JSON.parse(storedCart) : [];
+    } catch (error) {
+        console.error("Error loading cart data:", error);
+        return [];
+    }
 };
 
 const cartSlice = createSlice({
@@ -54,10 +48,10 @@ const cartSlice = createSlice({
             }
             saveCartToStorage(state.items);
         },
-        updateQuantity: (state, action: PayloadAction<{ id: string; type: "increase" | "decrease" }>) => {
+        updateQuantity: (state, action: PayloadAction<{ id: string; quantitiy: number }>) => {
             const item = state.items.find((item) => item.id === action.payload.id);
             if (item) {
-                item.quantity = action.payload.type === "increase" ? item.quantity + 1 : Math.max(1, item.quantity - 1);
+                item.quantity = action.payload.quantitiy
             }
             saveCartToStorage(state.items);
         },

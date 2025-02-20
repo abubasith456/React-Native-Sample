@@ -23,6 +23,7 @@ export const EditProfileScreen = ({ route }: any) => {
     const [email, setEmail] = useState(data?.email || '');
     const [phone, setPhone] = useState(data?.mobileNumber || '');
     const [profilePicture, setProfilePicture] = useState(data?.profilePic || '');
+    const [fileName, setFileName] = useState('');
 
     useEffect(() => {
         if (updateError) {
@@ -46,19 +47,20 @@ export const EditProfileScreen = ({ route }: any) => {
         if (!result.canceled) {
             // Move the image to a more permanent location
             const fileUri = result.assets[0].uri;
-
-            try {
-                const newFileUri = FileSystem.documentDirectory + 'userProfile.jpg';
-                await FileSystem.moveAsync({
-                    from: fileUri,
-                    to: newFileUri
-                });
-                setProfilePicture(newFileUri);
-                console.log("Image moved to:", newFileUri);
-                // You can now upload the file from the new location
-            } catch (error) {
-                console.error("Error moving file:", error);
-            }
+            setProfilePicture(fileUri);
+            setFileName(result.assets[0].fileName as string)
+            // try {
+            //     const newFileUri = FileSystem.documentDirectory + 'userProfile.jpg';
+            //     await FileSystem.moveAsync({
+            //         from: fileUri,
+            //         to: newFileUri
+            //     });
+            //     setProfilePicture(newFileUri);
+            //     console.log("Image moved to:", newFileUri);
+            //     // You can now upload the file from the new location
+            // } catch (error) {
+            //     console.error("Error moving file:", error);
+            // }
         }
 
         // if (!result.canceled) {
@@ -68,10 +70,12 @@ export const EditProfileScreen = ({ route }: any) => {
 
     const handleSave = () => {
         // Handle saving profile logic here
+        console.log("handleSave .............")
         dispatch(updateProfile({
             userId: data?.unique_id,
             username: name,
             image: profilePicture,
+            filname: fileName,
             email: email,
             mobileNumber: data?.mobileNumber
         }));
@@ -105,6 +109,7 @@ export const EditProfileScreen = ({ route }: any) => {
                     style={styles.input}
                     placeholder="Enter your email"
                     value={email}
+                    editable={false}
                     onChangeText={setEmail}
                     keyboardType="email-address"
                 />
