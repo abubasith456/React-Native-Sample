@@ -10,7 +10,7 @@ import {
 } from "react-native"
 import { RootState, useAppDispatch, useAppSelector } from "../core/state_management/store";
 import { useEffect } from "react";
-import { fetchHome } from "../core/api/UserRepo";
+import { fetchHome, fetchProfile } from "../core/api/UserRepo";
 import { HomeHeader } from "../components/home_components/HomeHeader";
 import { HomeBanner } from "../components/home_components/HomeBanner";
 import { categoriesData, productsData, recentPurchasesData } from "../constants/ApiSampleResponse";
@@ -29,6 +29,7 @@ export const HomeScreen = ({ navigation, route }: any) => {
     console.log("navigation data =>", navigation)
     console.log("route data =>", route)
     const dispatch = useAppDispatch();
+    const { profileData } = useAppSelector((state: RootState) => state.profileApi);
     const { loading, data, error, errorMessage } = useAppSelector((state: RootState) => state.homeApi);
     const userData = data?.data.user;
     const featureProducts = data?.data.products ?? [];
@@ -56,6 +57,8 @@ export const HomeScreen = ({ navigation, route }: any) => {
         const retrievedData = await getUserData();
         const userId = retrievedData?.user_id
         dispatch(fetchHome({ userId }))
+        dispatch(fetchProfile({ userId: userId }));
+
     }
 
     const renderCategoryItem = ({ item }: any) => (
@@ -104,8 +107,8 @@ export const HomeScreen = ({ navigation, route }: any) => {
                 <ShimmerHeader />
             ) : (
                 <HomeHeader
-                    profilePicUrl={userData?.profilePic}
-                    userName={userData?.username}
+                    profilePicUrl={profileData?.profilePic}
+                    userName={profileData?.username}
                     searchOnPressed={() => {
                         navigation.navigate("Search");
                     }} />
@@ -229,15 +232,16 @@ const styles = StyleSheet.create({
         flex: 1,
         margin: 5,
         backgroundColor: 'white',
-        borderRadius: 10,
+        borderRadius: 30,
         elevation: 3,
         alignItems: 'center',
-        padding: 10,
+        paddingTop: 5,
+        paddingBottom: 10
     },
     productImage: {
         width: '100%',
         height: 150,
-        borderRadius: 5,
+        borderRadius: 10,
     },
     productName: {
         fontSize: 14,

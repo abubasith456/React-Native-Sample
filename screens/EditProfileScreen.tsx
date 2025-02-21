@@ -14,22 +14,31 @@ import { GlobalStyle } from '../constants/styles';
 import { RootState, useAppDispatch, useAppSelector } from "../core/state_management/store";
 import { updateProfile } from '../core/api/UserRepo';
 import * as FileSystem from 'expo-file-system';
+import CustomMessageDialog from '../components/base_components/CustomMessageDialog';
+import { resetState } from '../core/state_management/api_slice/ProfileSlice';
 
-export const EditProfileScreen = ({ route }: any) => {
+export const EditProfileScreen = ({ navigation }: any) => {
     const dispatch = useAppDispatch();
-    const { data, updateError }
-        = useAppSelector((state: RootState) => state.profileApi);
+    const { profileData: data, dialog, error } = useAppSelector((state: RootState) => state.profileApi);
     const [name, setName] = useState(data?.username);
     const [email, setEmail] = useState(data?.email || '');
     const [phone, setPhone] = useState(data?.mobileNumber || '');
     const [profilePicture, setProfilePicture] = useState(data?.profilePic || '');
     const [fileName, setFileName] = useState('');
+    const [isEditMode, setIsEditMode] = useState(false);
 
+    // Set the header right button for edit mode
     useEffect(() => {
-        if (updateError) {
-            Alert.alert("Error!", updateError?.toString())
-        }
-    }, [])
+        navigation.setOptions({
+            headerRight: () => (
+                <TouchableOpacity onPress={toggleEditMode}>
+                    <Text style={styles.editButtonText}>
+                        {isEditMode ? 'Cancel' : 'Edit'}
+                    </Text>
+                </TouchableOpacity>
+            ),
+        });
+    }, [isEditMode]);
 
     const handlePickImage = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -45,46 +54,44 @@ export const EditProfileScreen = ({ route }: any) => {
         });
 
         if (!result.canceled) {
-            // Move the image to a more permanent location
             const fileUri = result.assets[0].uri;
             setProfilePicture(fileUri);
-            setFileName(result.assets[0].fileName as string)
-            // try {
-            //     const newFileUri = FileSystem.documentDirectory + 'userProfile.jpg';
-            //     await FileSystem.moveAsync({
-            //         from: fileUri,
-            //         to: newFileUri
-            //     });
-            //     setProfilePicture(newFileUri);
-            //     console.log("Image moved to:", newFileUri);
-            //     // You can now upload the file from the new location
-            // } catch (error) {
-            //     console.error("Error moving file:", error);
-            // }
+            setFileName(result.assets[0].fileName as string);
         }
-
-        // if (!result.canceled) {
-        //     setProfilePicture(result.assets[0].uri); // Adjusted for new response structure
-        // }
     };
 
     const handleSave = () => {
-        // Handle saving profile logic here
-        console.log("handleSave .............")
         dispatch(updateProfile({
             userId: data?.unique_id,
             username: name,
-            image: profilePicture,
+            image: profilePicture ?? data?.profilePic,
             filname: fileName,
             email: email,
-            mobileNumber: data?.mobileNumber
+            mobileNumber: phone,
         }));
+        setIsEditMode(false); // Exit edit mode after saving
+    };
+
+    const toggleEditMode = () => {
+        setIsEditMode(!isEditMode);
     };
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
+            <CustomMessageDialog
+                isVisible={dialog.visible}
+                message={dialog.message}
+                type={error ? 'error' : 'success'}
+                onClose={() => {
+                    console.log("onClose")
+                    // dispatch(showDialog({
+                    //     visible: false
+                    // }))
+                    dispatch(resetState())
+                }}
+            />
             <View style={styles.profilePictureContainer}>
-                <TouchableOpacity onPress={handlePickImage}>
+                <TouchableOpacity onPress={handlePickImage} disabled={!isEditMode}>
                     {profilePicture ? (
                         <Image source={{ uri: profilePicture }} style={styles.profilePicture} />
                     ) : (
@@ -102,6 +109,7 @@ export const EditProfileScreen = ({ route }: any) => {
                     placeholder="Enter your name"
                     value={name}
                     onChangeText={setName}
+                    editable={isEditMode}
                 />
 
                 <Text style={styles.label}>Email</Text>
@@ -120,13 +128,16 @@ export const EditProfileScreen = ({ route }: any) => {
                     placeholder="Enter your phone number"
                     value={phone}
                     onChangeText={setPhone}
+                    editable={isEditMode}
                     keyboardType="phone-pad"
                 />
             </View>
 
-            <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-                <Text style={styles.saveButtonText}>Save</Text>
-            </TouchableOpacity>
+            {isEditMode && (
+                <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+                    <Text style={styles.saveButtonText}>Save</Text>
+                </TouchableOpacity>
+            )}
         </ScrollView>
     );
 };
@@ -135,16 +146,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f9f9f9',
-    },
-    header: {
-        padding: 20,
-        backgroundColor: '#FF6F00',
-        alignItems: 'center',
-    },
-    headerText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#fff',
     },
     profilePictureContainer: {
         alignItems: 'center',
@@ -199,4 +200,12 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
     },
+    editButtonText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: GlobalStyle.primaryColor,
+        marginRight: 16,
+    },
 });
+
+export default EditProfileScreen;

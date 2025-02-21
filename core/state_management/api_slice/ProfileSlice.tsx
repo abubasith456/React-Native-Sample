@@ -16,19 +16,21 @@ interface Profile {
 }
 
 interface ProfileState {
-    data: Profile | null;
+    profileData: Profile | null;
     loading: boolean;
     error: boolean;
     errorMessage: string | null;
     updateError: string | null;
+    dialog: { visible: boolean, message: string, type: 'error' | 'info' | 'success' };
 }
 
 const initialState: ProfileState = {
-    data: null,
+    profileData: null,
     loading: false,
     error: false,
     errorMessage: null,
-    updateError: null
+    updateError: null,
+    dialog: { visible: false, message: '', type: 'info' },
 };
 
 
@@ -36,7 +38,17 @@ const profileSlice = createSlice({
     name: 'profileApi',
     initialState: initialState,
     reducers: {
-        resetState: () => initialState,
+        resetState: (state) => {
+            state.loading = false;
+            state.errorMessage = null;
+            state.updateError = null;
+            state.dialog = { visible: false, message: '', type: 'info' }
+        },
+        updateProfilePictureLocally: (state, action: PayloadAction<string>) => {
+            if (state.profileData) {
+                state.profileData.profilePic = action.payload;
+            }
+        }
     },
     extraReducers: builder => {
         builder
@@ -46,8 +58,9 @@ const profileSlice = createSlice({
             .addCase(fetchProfile.fulfilled, (state, action) => {
                 console.log("fetchProfile fillFiled => " + action.payload);
                 if (action.payload.status == 200) {
-                    state.data = action.payload.data;
+                    state.profileData = action.payload.data;
                     state.loading = false;
+                    state.error = false
                 } else {
                     state.loading = false;
                     state.error = true
@@ -60,32 +73,34 @@ const profileSlice = createSlice({
                 state.errorMessage = errorMessage ? errorMessage : "Something went wrong!"
             })
             .addCase(updateProfile.pending, (state, action) => {
-                console.log("updateProfile fillFiled => " + action.payload);
+                console.log("updating...=> " + action.payload);
                 state.loading = true;
                 state.updateError = null
             })
             .addCase(updateProfile.fulfilled, (state, action) => {
                 console.log("updateProfile filled => ", action.payload);
-                if (action.payload.status == 200) {
-                    state.data = action.payload.data;
-                    state.loading = false;
-                    state.updateError = null
+                state.loading = false;
+                state.error = false
+                state.dialog.message = action.payload.message
+                if (!!action.payload.data) {
+                    state.profileData = action.payload.data;
+                    state.dialog.visible = true
                 } else {
-                    console.log("--------> ", action.payload.message)
-                    state.loading = false;
-                    state.error = true
-                    state.updateError = action.payload.message;
+                    console.log("Error --------> ", action.payload.message)
+                    state.dialog.visible = true
                 }
             })
             .addCase(updateProfile.rejected, (state, action) => {
                 state.loading = false;
                 state.error = true;
                 const errorMessage = action.error.message?.toString();
-                state.updateError = errorMessage ? errorMessage : "Something went wrong!"
+                state.dialog.visible = true
+                state.dialog.message = errorMessage ? errorMessage : "Something went wrong!"
             })
     }
 });
 
+export const { resetState, updateProfilePictureLocally } = profileSlice.actions;
 
 export default profileSlice.reducer;
 

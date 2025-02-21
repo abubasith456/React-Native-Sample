@@ -13,7 +13,7 @@ const profilePic = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8UDpy
 
 export const ProfileScreen = ({ navigation }: any) => {
     const dispatch = useAppDispatch();
-    const { data } = useAppSelector((state: RootState) => state.profileApi);
+    const { profileData: data } = useAppSelector((state: RootState) => state.profileApi);
 
     // 🔥 Store userId in state
     const [userId, setUserId] = useState("");

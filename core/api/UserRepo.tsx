@@ -185,25 +185,22 @@ export const updateProfile = createAsyncThunk(
             const formData = new FormData();
             const imageURL = payload.image;
             // Check if the image URI exists
-            if (imageURL) {
-                const fileInfo = await FileSystem.getInfoAsync(imageURL);
-                if (fileInfo.exists) {
-                    // Extract the file name and type
-                    const fileType = imageURL.split('.').pop(); // Get file extension
-                    const fileName = `${payload.userId}_profile.${fileType}`;
+            if (imageURL && !imageURL.includes("https://")) {
+                // Extract the file name and type
+                const fileType = imageURL.split('.').pop(); // Get file extension
+                const fileName = `${payload.userId}_profile.${fileType}`;
 
-                    // Append the file to FormData
-                    formData.append('file', {
-                        uri: Platform.OS === 'ios' ? imageURL.replace('file://', '') : imageURL,
-                        name: fileName,
-                        type: `image/${fileType}`,
-                    } as any); // Use `as any` to bypass TypeScript errors
+                // Append the file to FormData
+                formData.append('file', {
+                    uri: Platform.OS === 'ios' ? imageURL.replace('file://', '') : imageURL,
+                    name: fileName,
+                    type: `image/${fileType}`,
+                } as any); // Use `as any` to bypass TypeScript errors
 
-                    // Append metadata (e.g., filePath, imageName)
-                    const filePath = Platform.OS === 'ios' ? imageURL.replace('file://', '') : imageURL;
-                    formData.append('filePath', filePath);
-                    formData.append('imageName', fileName);
-                }
+                // Append metadata (e.g., filePath, imageName)
+                const filePath = Platform.OS === 'ios' ? imageURL.replace('file://', '') : imageURL;
+                formData.append('filePath', filePath);
+                formData.append('imageName', fileName);
             }
 
             // Append other user details
@@ -212,6 +209,8 @@ export const updateProfile = createAsyncThunk(
             if (payload.dateOfBirth) formData.append('dateOfBirth', payload.dateOfBirth);
             if (payload.mobileNumber) formData.append('mobileNumber', payload.mobileNumber);
             if (payload.email) formData.append('email', payload.email);
+
+            console.log(formData)
 
             // Make API call
             const response = await axiosInstance.post('/profileUpdate', formData, {
@@ -222,6 +221,7 @@ export const updateProfile = createAsyncThunk(
             });
             return response.data;
         } catch (error: any) {
+            console.log(" PROFILE ==> ", error)
             if (error.response) {
                 return rejectWithValue(error.response.data.message || 'Failed');
             } else if (error.request) {

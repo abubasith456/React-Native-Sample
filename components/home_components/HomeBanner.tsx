@@ -18,7 +18,7 @@ export const HomeBanner = ({ data }: any) => {
     );
 
     return (
-        <View style={{ marginHorizontal: 10, height: 150 }} >
+        <View style={{ height: 150 }} >
             <Text style={{ fontSize: 17, fontWeight: 'bold', marginHorizontal: 10 }} >Special offers!</Text>
             <Carousel
                 loop
