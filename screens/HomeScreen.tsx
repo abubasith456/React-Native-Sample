@@ -23,6 +23,7 @@ import ShimmerBanner from "../components/shimmering/home_shimmering/BannerShimme
 import ShimmerCategories from "../components/shimmering/home_shimmering/CategoryShimmer";
 import ShimmerProducts from "../components/shimmering/home_shimmering/ProductShimmer";
 import ShimmerRecentPurchases from "../components/shimmering/home_shimmering/SimilarShimmer";
+import CustomBody from "../components/base_components/CustomBody";
 
 
 export const HomeScreen = ({ navigation, route }: any) => {
@@ -100,7 +101,7 @@ export const HomeScreen = ({ navigation, route }: any) => {
     }
     console.log("SPECIAL LOG: ==> ", loading)
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor={GlobalStyle.primaryColor} />
             {/* Header */}
             {loading ? (
@@ -114,63 +115,66 @@ export const HomeScreen = ({ navigation, route }: any) => {
                     }} />
             )}
             {/* Scrollable Body */}
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
-                {/* Banner */}
-                {loading ? (
-                    <ShimmerBanner />
-                ) : (
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        <HomeBanner data={data?.data.banner} />
+            <CustomBody>
+                <ScrollView contentContainerStyle={styles.scrollContainer}>
+                    {/* Banner */}
+                    {loading ? (
+                        <ShimmerBanner />
+                    ) : (
+                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <HomeBanner data={data?.data.banner} />
+                        </View>
+                    )}
+                    {/* Categories Section */}
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Categories</Text>
+                        {loading ? (
+                            <ShimmerCategories />
+                        ) : (
+                            <FlatList
+                                numColumns={4}
+                                data={data?.data.categories || categoriesData}
+                                renderItem={renderCategoryItem}
+                                keyExtractor={(item) => item._id.toString()}
+                                showsHorizontalScrollIndicator={false}
+                                contentContainerStyle={styles.flatListContainer}
+                                scrollEnabled={false}
+                            />
+                        )}
                     </View>
-                )}
-                {/* Categories Section */}
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Categories</Text>
-                    {loading ? (
-                        <ShimmerCategories />
-                    ) : (
-                        <FlatList
-                            numColumns={4}
-                            data={data?.data.categories || categoriesData}
-                            renderItem={renderCategoryItem}
-                            keyExtractor={(item) => item._id.toString()}
-                            showsHorizontalScrollIndicator={false}
-                            contentContainerStyle={styles.flatListContainer}
-                            scrollEnabled={false}
-                        />
-                    )}
-                </View>
-                {/* Products Section */}
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Featured Products</Text>
-                    {loading ? (
-                        <ShimmerProducts />
-                    ) : (
-                        <FlatList
-                            numColumns={2}
-                            data={featureProducts || productsData}
-                            renderItem={renderProductItem}
-                            keyExtractor={(item) => Math.random().toString()}
-                            scrollEnabled={false}
-                        />
-                    )}
-                </View>
-                {/* Recent Purchases Section */}
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Recent Purchases</Text>
-                    {loading ? (
-                        <ShimmerRecentPurchases />
-                    ) : (
-                        <FlatList
-                            data={getRecentPurchaseData()}
-                            renderItem={renderRecentPurchaseItem}
-                            keyExtractor={(item) => item._id.toString()}
-                            scrollEnabled={false}
-                        />
-                    )}
-                </View>
-            </ScrollView>
-        </SafeAreaView>
+                    {/* Products Section */}
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Featured Products</Text>
+                        {loading ? (
+                            <ShimmerProducts />
+                        ) : (
+                            <FlatList
+                                numColumns={2}
+                                data={featureProducts || productsData}
+                                renderItem={renderProductItem}
+                                keyExtractor={(item) => Math.random().toString()}
+                                scrollEnabled={false}
+                            />
+                        )}
+                    </View>
+                    {/* Recent Purchases Section */}
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Recent Purchases</Text>
+                        {loading ? (
+                            <ShimmerRecentPurchases />
+                        ) : (
+                            <FlatList
+                                data={getRecentPurchaseData()}
+                                renderItem={renderRecentPurchaseItem}
+                                keyExtractor={(item) => item._id.toString()}
+                                scrollEnabled={false}
+                            />
+                        )}
+                    </View>
+                </ScrollView>
+            </CustomBody>
+
+        </View>
     );
 };
 

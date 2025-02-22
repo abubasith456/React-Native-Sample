@@ -2,6 +2,7 @@ import { StyleSheet, View, Dimensions, Text, TouchableOpacity, PixelRatio } from
 import { GlobalStyle } from "../../constants/styles";
 import { Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import CustomHeader from "../base_components/CustomHeader";
 
 const { height } = Dimensions.get("window");
 const profilePic = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8UDpyRVcLyyOViNVGvvk-TRAbmWfif0nemg&s";
@@ -11,7 +12,7 @@ export const HomeHeader = ({ profilePicUrl, userName, searchOnPressed }: any) =>
     const isProfilePicUrlAvailable = !!profilePicUrl;
     const isuserNameAvailable = !!userName
     return (
-        <View style={styles.headerCard}>
+        <CustomHeader>
             <View style={styles.headerInnerContainer}>
                 <Image
                     source={{ uri: profilePicUrl || profilePic }}
@@ -28,20 +29,20 @@ export const HomeHeader = ({ profilePicUrl, userName, searchOnPressed }: any) =>
                     <Ionicons name="search" size={20} />
                 </TouchableOpacity>
             </View>
-        </View>
+        </CustomHeader>
     );
 
 }
 
 const styles = StyleSheet.create({
-    headerCard: {
-        width: "100%",
-        height: height * 0.11,
-        paddingTop: height * 0.02,
-        backgroundColor: GlobalStyle.primaryColor,
-        borderBottomEndRadius: 30,
-        borderBottomStartRadius: 30
-    },
+    // headerCard: {
+    //     width: "100%",
+    //     height: height * 0.11,
+    //     paddingTop: height * 0.02,
+    //     backgroundColor: GlobalStyle.primaryColor,
+    //     borderBottomEndRadius: 30,
+    //     borderBottomStartRadius: 30
+    // },
     headerInnerContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',

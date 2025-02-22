@@ -1,13 +1,14 @@
 import { StyleSheet, View, Dimensions, Text } from "react-native"
 import { GlobalStyle } from "../../constants/styles";
+import CustomHeader from "../base_components/CustomHeader";
 
 const { height } = Dimensions.get("window");
 
 export const HeaderCard = ({ profileUrl, headerIconUrl, usernameTitle, userSubTitile, backPressNeeded, onBackButtonPress }: any) => {
     return (
-        <View style={styles.headerCard}>
+        <CustomHeader>
             <Text style={styles.title}>Shopping Cart</Text>
-        </View>
+        </CustomHeader>
     )
 }
 
