@@ -32,6 +32,7 @@
     "expo-status-bar": "~2.0.0",
     "expo-system-ui": "^4.0.6",
     "expo-web-browser": "^14.0.1",
+    "formik": "^2.4.6",
     "lottie-react-native": "^7.1.0",
     "react": "18.3.1",
     "react-native": "0.76.5",
@@ -50,7 +51,8 @@
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "~0.19.13",
     "react-native-web-lottie": "^1.4.4",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
