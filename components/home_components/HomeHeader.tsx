@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         marginStart: 10,
     },
     text: {
-        fontSize: PixelRatio.getFontScale() * 18,
+        fontSize: PixelRatio.getFontScale() * 20,
         fontWeight: 'bold',
         color: 'white',
     },

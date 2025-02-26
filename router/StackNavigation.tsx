@@ -10,6 +10,7 @@ import { SplashScreen } from '../screens/auth/SplashScreen';
 import { ProductsScreen } from '../screens/ProductsScreen';
 import OrderHistoryScreen from '../screens/OrderHistoryScreen';
 import { NewHomeScreen } from '../screens/NewHomeScreen';
+import AddressScreen from '../screens/AddressScreen';
 
 const Stack = createStackNavigator();
 
@@ -33,9 +34,11 @@ export const StackNagivation = () => {
                     headerShown: false
                 }} />
                 <Stack.Screen name='Products' component={ProductsScreen} />
-                <Stack.Screen name='OrderHistory' component={OrderHistoryScreen} />
+                <Stack.Screen name='OrderHistory' component={OrderHistoryScreen} options={{
+                    headerShown: false
+                }} />
 
-                <Stack.Screen name="NewScreen" component={NewHomeScreen} />
+                <Stack.Screen name="Address" component={AddressScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

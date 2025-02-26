@@ -104,7 +104,7 @@ export const HomeScreen = ({ navigation, route }: any) => {
         <View style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor={GlobalStyle.primaryColor} />
             {/* Header */}
-            {loading ? (
+            {loading || data == null ? (
                 <ShimmerHeader />
             ) : (
                 <HomeHeader
@@ -118,7 +118,7 @@ export const HomeScreen = ({ navigation, route }: any) => {
             <CustomBody>
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
                     {/* Banner */}
-                    {loading ? (
+                    {loading || data == null ? (
                         <ShimmerBanner />
                     ) : (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -128,7 +128,7 @@ export const HomeScreen = ({ navigation, route }: any) => {
                     {/* Categories Section */}
                     <View style={styles.section}>
                         <Text style={styles.sectionTitle}>Categories</Text>
-                        {loading ? (
+                        {loading || data == null ? (
                             <ShimmerCategories />
                         ) : (
                             <FlatList
@@ -145,7 +145,7 @@ export const HomeScreen = ({ navigation, route }: any) => {
                     {/* Products Section */}
                     <View style={styles.section}>
                         <Text style={styles.sectionTitle}>Featured Products</Text>
-                        {loading ? (
+                        {loading || data == null ? (
                             <ShimmerProducts />
                         ) : (
                             <FlatList
@@ -160,7 +160,7 @@ export const HomeScreen = ({ navigation, route }: any) => {
                     {/* Recent Purchases Section */}
                     <View style={styles.section}>
                         <Text style={styles.sectionTitle}>Recent Purchases</Text>
-                        {loading ? (
+                        {loading || data == null ? (
                             <ShimmerRecentPurchases />
                         ) : (
                             <FlatList
@@ -183,7 +183,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
     },

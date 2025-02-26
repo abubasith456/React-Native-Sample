@@ -45,7 +45,7 @@ export const ProfileScreen = ({ navigation }: any) => {
     return (
         <SafeAreaView style={{
             flex: 1,
-            backgroundColor: '#f5f5f5',
+            backgroundColor: 'white',
             justifyContent: 'center',
         }}>
             {/* Profile Header Content */}

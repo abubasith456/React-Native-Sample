@@ -1,16 +1,7 @@
-import { DefaultTheme } from 'react-native-paper'
+import { DefaultTheme } from 'react-native-paper';
 
-export const GlobalStyle = {
-    ...DefaultTheme.colors,
-    primaryColor: '#7373ff',
-    primaryLightColor: '#87CEEB', //Will change
-    primaryButtonColor: '#7373ff',
-    primaryTextColor: 'white',
-    secondaryTextColor: 'grey',
-    splashBaseColor: "black"
-}
-
-export default {
+// Define your custom color scheme
+const customColors = {
     primary: "#2da7bc",
     text: "#707070",
     grey: "#b5b5b5",
@@ -22,7 +13,6 @@ export default {
     yellow: "#fed922",
     light_bg: "#e0e0e2",
     light_green: "#0f7e4a",
-    // light_green: "#18945a",
     lighter_green: "#2ba56a",
     leave_green: "#18a561",
     purple: "#876aba",
@@ -30,14 +20,64 @@ export default {
     green: "#1baa43",
     straw: "#e55d4b",
     red: "#e53b32",
-    // blue: "#1A91DA",
     bluegreen: "#2CB9B0",
     black: "#000000",
+    primaryColor: '#7373ff',
+    primaryLightColor: '#87CEEB',
+    primaryButtonColor: '#7373ff',
+    primaryTextColor: 'white',
+    secondaryTextColor: 'grey',
+    splashBaseColor: "black"
 };
 
+export const GlobalStyle = {
+    ...DefaultTheme.colors,
+    primaryColor: '#7373ff',
+    primaryLightColor: '#87CEEB', //Will change
+    primaryButtonColor: '#7373ff',
+    primaryTextColor: 'white',
+    secondaryTextColor: 'grey',
+    splashBaseColor: "black"
+}
+
+// Extend the default theme with your custom colors
+export const theme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        ...customColors,
+        // Map Paper's default color names to your custom colors
+        primary: customColors.primaryColor,
+        accent: customColors.bluegreen,
+        background: customColors.white,
+        surface: customColors.light_grey,
+        error: customColors.red,
+        text: customColors.primaryTextColor,
+        onSurface: customColors.secondaryTextColor,
+    },
+    // Add other theme properties
+    roundness: 8,
+    fonts: {
+        ...DefaultTheme.fonts,
+        // Define custom fonts if needed
+        regular: {
+            fontFamily: 'Roboto-Regular',
+            fontWeight: '400' as '400',
+        },
+        medium: {
+            fontFamily: 'Roboto-Medium',
+            fontWeight: '500' as '500',
+        },
+    },
+};
+
+// Type for theme consumption in components
+export type AppTheme = typeof theme;
+
+// Helper function remains the same
 export function generateColor() {
     const randomColor = Math.floor(Math.random() * 16777215)
         .toString(16)
         .padStart(6, '0');
     return `#${randomColor}`;
-};
+}

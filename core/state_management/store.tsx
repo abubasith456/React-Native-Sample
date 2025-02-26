@@ -10,6 +10,7 @@ import registerSlice from './api_slice/SignInSlice';
 import productsSlice from './api_slice/ProductsSlice';
 import OrderHistorySlice from './api_slice/OrderHistorySlice';
 import CartSlice from './screen_slice/CartSlice';
+import AddressSlice from './screen_slice/AddressSlice';
 
 export const resetState = createAction("RESET_STATE");
 
@@ -19,6 +20,7 @@ const appReducer = combineReducers({
     login: LoginSlice,
     signUp: SignupSlice,
     cart: CartSlice,
+    address: AddressSlice,
     
     // API
     loginApi: loginSlice,
@@ -27,7 +29,7 @@ const appReducer = combineReducers({
     homeApi: HomeSlice,
     productSearch: SearchProductSlice,
     productsApi: productsSlice,
-    orderHistoryApi: OrderHistorySlice
+    orderHistoryApi: OrderHistorySlice,
 });
 
 // ✅ Step 2: Reset state on logout

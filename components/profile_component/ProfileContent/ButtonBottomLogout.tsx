@@ -17,7 +17,7 @@ export const ButtonBottomLogout = ({ onClick }: any) => {
 const styles = StyleSheet.create({
     logoutButtonContainer: {
         width: "100%",
-        bottom: height * 0.02, // Adjust based on how far you want the button from the bottom
+        bottom: height * 0.1, // Adjust based on how far you want the button from the bottom
         alignItems: 'center',
 
     },

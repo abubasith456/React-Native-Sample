@@ -10,8 +10,10 @@ import {
 import { RootState, useAppDispatch, useAppSelector } from "../core/state_management/store";
 import { Order, Product } from '../model/OrderModel';
 import { fetchOrderHistory } from '../core/api/ProductRepo';
+import CustomHeaderWithBack from '../components/base_components/CustomHeaderWithBack';
+import CustomBody from '../components/base_components/CustomBody';
 
-const OrderHistoryScreen = ({ route }: any) => {
+const OrderHistoryScreen = ({ navigation, route }: any) => {
     // const { userId } = route.params;
     const userId = "11"
     const dispatch = useAppDispatch();
@@ -76,13 +78,13 @@ const OrderHistoryScreen = ({ route }: any) => {
         }
     };
 
-    if (isLoader) {
-        return (
-            <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#3498db" />
-            </View>
-        );
-    }
+    // if (isLoader) {
+    //     return (
+    //         <View style={styles.loadingContainer}>
+    //             <ActivityIndicator size="large" color="#3498db" />
+    //         </View>
+    //     );
+    // }
 
     if (data?.length === 0) {
         return (
@@ -94,12 +96,26 @@ const OrderHistoryScreen = ({ route }: any) => {
 
     return (
         <View style={styles.container}>
-            <FlatList
-                data={data || []}
-                keyExtractor={(item) => item._id}
-                renderItem={renderItem}
-                contentContainerStyle={styles.listContainer}
-            />
+            <CustomHeaderWithBack title="Order History"
+                onBackPress={() => navigation.goBack()} />
+            <CustomBody>
+                {
+                    isLoader ? <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="large" color="#3498db" />
+                    </View> : null
+                }
+                {
+                    !isLoader && !data ? <View style={styles.emptyContainer}>
+                        <Text style={styles.emptyText}>No orders found.</Text>
+                    </View> : null
+                }
+                {data ? <FlatList
+                    data={data || []}
+                    keyExtractor={(item) => item._id}
+                    renderItem={renderItem}
+                    contentContainerStyle={styles.listContainer}
+                /> : null}
+            </CustomBody>
         </View>
     );
 };
@@ -107,7 +123,7 @@ const OrderHistoryScreen = ({ route }: any) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: 'white',
     },
     listContainer: {
         padding: 16,
@@ -124,7 +140,7 @@ const styles = StyleSheet.create({
     },
     emptyText: {
         fontSize: 18,
-        color: '#7f8c8d',
+        color: 'black',
     },
     orderItem: {
         backgroundColor: '#fff',

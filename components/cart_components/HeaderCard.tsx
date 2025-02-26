@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions, Text } from "react-native"
+import { StyleSheet, PixelRatio, Dimensions, Text } from "react-native"
 import { GlobalStyle } from "../../constants/styles";
 import CustomHeader from "../base_components/CustomHeader";
 
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
     },
     title: {
-        fontSize: 24,
+        fontSize: PixelRatio.getFontScale() * 22,
         fontWeight: "bold",
         textAlign: "center",
         marginBottom: 16,

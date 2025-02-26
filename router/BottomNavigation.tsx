@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1, // iOS shadow transparency
         shadowRadius: 4, // iOS shadow blur
         height: 70, // Increase tab bar height
-        borderTopWidth: 1,
         borderTopColor: "#ecf0f1",
+        position: 'absolute',
     },
     tabBarItem: {
         paddingVertical: 10, // Increase touch area

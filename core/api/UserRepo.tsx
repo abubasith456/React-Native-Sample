@@ -232,3 +232,87 @@ export const updateProfile = createAsyncThunk(
         }
     }
 );
+
+//--------------- Address Section ----------------//
+
+// Fetch all addresses
+export const fetchAddresses = createAsyncThunk(
+    'user/fetchAddresses',
+    async (userId: string, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get(`/profileUpdate/address/${userId}`);
+            return response.data;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to fetch addresses');
+        }
+    }
+);
+
+// Add new address
+export const addAddress = createAsyncThunk(
+    'user/addAddress',
+    async ({ userId, addressData }: { userId: string; addressData: any }, { rejectWithValue }) => {
+        try {
+            const payload = {
+                userId,
+                ...addressData
+            };
+            const response = await axiosInstance.post('/profileUpdate/address', payload);
+
+            if (response.data.status) {
+                return response.data;
+            } else {
+                return rejectWithValue(response.data.message);
+            }
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to add address');
+        }
+    }
+);
+
+// Update address
+export const updateAddress = createAsyncThunk(
+    'user/updateAddress',
+    async ({ userId, addressId, addressData }: {
+        userId: string;
+        addressId: string;
+        addressData: any
+    }, { rejectWithValue }) => {
+        try {
+            const payload = {
+                userId,
+                addressId,
+                ...addressData
+            };
+            const response = await axiosInstance.put('/profileUpdate/address', payload);
+
+            if (response.data.status) {
+                return response.data;
+            } else {
+                return rejectWithValue(response.data.message);
+            }
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to update address');
+        }
+    }
+);
+
+// Delete address
+export const deleteAddress = createAsyncThunk(
+    'user/deleteAddress',
+    async ({ userId, addressId }: { userId: string; addressId: string }, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.delete('/profileUpdate/address', {
+                data: { userId, addressId }
+            });
+
+            if (response.data.status) {
+                return response.data;
+            } else {
+                return rejectWithValue(response.data.message);
+            }
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to delete address');
+        }
+    }
+);
