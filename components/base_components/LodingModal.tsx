@@ -27,7 +27,6 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isVisible, type = 'normal' 
             transparent={true}
             visible={isVisible}
             statusBarTranslucent={true}
-            hardwareAccelerated={true}
             style={{
                 flex: 1,
                 justifyContent: 'center',
