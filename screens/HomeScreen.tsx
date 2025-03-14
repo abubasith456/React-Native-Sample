@@ -7,6 +7,7 @@ import {
     Image,
     TouchableOpacity,
     StatusBar,
+    Dimensions
 } from "react-native"
 import { RootState, useAppDispatch, useAppSelector } from "../core/state_management/store";
 import { useEffect } from "react";
@@ -25,6 +26,8 @@ import ShimmerProducts from "../components/shimmering/home_shimmering/ProductShi
 import ShimmerRecentPurchases from "../components/shimmering/home_shimmering/SimilarShimmer";
 import CustomBody from "../components/base_components/CustomBody";
 
+const { width } = Dimensions.get('window');
+const CARD_WIDTH = (width - 36) / 2;
 
 export const HomeScreen = ({ navigation, route }: any) => {
     console.log("navigation data =>", navigation)
@@ -75,12 +78,34 @@ export const HomeScreen = ({ navigation, route }: any) => {
     );
 
     const renderProductItem = ({ item }: any) => (
-        <TouchableOpacity style={styles.productCard} onPress={() => {
-            navigation.navigate('ProductDetails', { product: item, productName: "hijabs" });
-        }}>
-            <Image source={{ uri: item.productImage ?? item.images[0] }} style={styles.productImage} />
-            <Text style={styles.productName}>{item.name}</Text>
-            <Text style={styles.productPrice}>Rs.{item.price}</Text>
+        // <TouchableOpacity style={styles.productCard} onPress={() => {
+        //     navigation.navigate('ProductDetails', { product: item, productName: "hijabs" });
+        // }}>
+        //     <Image source={{ uri: item.productImage ?? item.images[0] }} style={styles.productImage} />
+        //     <Text style={styles.productName}>{item.name}</Text>
+        //     <Text style={styles.productPrice}>Rs.{item.price}</Text>
+        // </TouchableOpacity>
+        // Below is new code
+        <TouchableOpacity
+            style={styles.productCard}
+            onPress={() => { }}
+            activeOpacity={0.7}
+        >
+            <View style={styles.imageContainer}>
+                <Image
+                    resizeMode="cover"
+                    source={{ uri: !item.image ? item.images?.[0] : item.image }}
+                    style={styles.productImage}
+                />
+            </View>
+            <View style={styles.textContainer}>
+                <Text numberOfLines={2} style={styles.productName}>
+                    {item.name}
+                </Text>
+                <Text style={styles.productPrice}>
+                    Rs. {item.price.toLocaleString()}
+                </Text>
+            </View>
         </TouchableOpacity>
     );
 
@@ -154,6 +179,8 @@ export const HomeScreen = ({ navigation, route }: any) => {
                                 renderItem={renderProductItem}
                                 keyExtractor={(item) => Math.random().toString()}
                                 scrollEnabled={false}
+                                columnWrapperStyle={styles.columnWrapper} // Add this
+                                contentContainerStyle={styles.productContainer}
                             />
                         )}
                     </View>
@@ -231,32 +258,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         textAlign: 'center',            // Center-align text
     },
-    productCard: {
-        flex: 1,
-        margin: 5,
-        backgroundColor: 'white',
-        borderRadius: 30,
-        elevation: 3,
-        alignItems: 'center',
-        paddingTop: 5,
-        paddingBottom: 10
-    },
-    productImage: {
-        width: '100%',
-        height: 150,
-        borderRadius: 10,
-    },
-    productName: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        marginTop: 5,
-        textAlign: 'center',
-    },
-    productPrice: {
-        fontSize: 12,
-        color: 'gray',
-        marginTop: 5
-    },
     recentPurchaseItem: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -275,5 +276,58 @@ const styles = StyleSheet.create({
     recentPurchaseDate: {
         fontSize: 12,
         color: 'gray',
+    },
+
+    productCard: {
+        flex: 1,
+        width: '100%',
+        paddingTop: 5,
+        paddingBottom: 10,
+        backgroundColor: '#fff',
+        borderRadius: 12,
+        overflow: 'hidden',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 5,
+    },
+
+
+    productContainer: {
+        padding: 8,
+        gap: 8,
+    },
+    columnWrapper: {
+        justifyContent: 'space-between',
+        gap: 16, // Add gap between columns
+    },
+    imageContainer: {
+        width: '100%',
+        height: CARD_WIDTH, // Make image container square
+        backgroundColor: '#f8f9fa',
+    },
+    productImage: {
+        width: '100%',
+        height: '100%',
+    },
+    textContainer: {
+        padding: 12,
+    },
+    productName: {
+        fontSize: 14,
+        fontWeight: '600',
+        color: '#1a1a1a',
+        lineHeight: 20,
+        marginBottom: 4,
+        flexWrap: 'wrap',
+    },
+    productPrice: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: GlobalStyle.primaryColor,
     },
 });

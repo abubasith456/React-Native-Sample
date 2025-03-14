@@ -114,7 +114,11 @@ const addressSlice = createSlice({
                 state.error = false;
             })
             .addCase(deleteAddress.fulfilled, (state, action) => {
-                state.addresses = state.addresses.filter(a => a._id !== action.payload);
+                // Filter out the deleted address
+                const updatedAddresses = state.addresses.filter(address => address._id !== action.payload.data._id);
+
+                // Update the state with new array
+                state.addresses = [...updatedAddresses];
                 state.loading = false;
                 state.dialog = {
                     visible: true,

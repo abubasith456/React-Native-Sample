@@ -179,10 +179,18 @@ const AddressScreen = () => {
                 { text: 'Cancel', style: 'cancel' },
                 {
                     text: 'Delete',
-                    onPress: () => dispatch(deleteAddress({
-                        userId: userId,
-                        addressId: id,
-                    }))
+                    onPress: async () => {
+                        try {
+                            await dispatch(deleteAddress({
+                                userId: userId,
+                                addressId: id,
+                            })).unwrap();
+                            // Refresh the addresses list after successful deletion
+                            dispatch(fetchAddresses(userId));
+                        } catch (error) {
+                            console.error('Failed to delete address:', error);
+                        }
+                    }
                 },
             ]
         );

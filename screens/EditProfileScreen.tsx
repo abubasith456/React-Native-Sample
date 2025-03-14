@@ -16,6 +16,7 @@ import { updateProfile } from '../core/api/UserRepo';
 import * as FileSystem from 'expo-file-system';
 import CustomMessageDialog from '../components/base_components/CustomMessageDialog';
 import { resetState } from '../core/state_management/api_slice/ProfileSlice';
+import CustomHeaderWithBack from '../components/base_components/CustomHeaderWithBack';
 
 export const EditProfileScreen = ({ navigation }: any) => {
     const dispatch = useAppDispatch();
@@ -78,6 +79,8 @@ export const EditProfileScreen = ({ navigation }: any) => {
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
+            <CustomHeaderWithBack title="Edit Profile"
+                onBackPress={() => navigation.goBack()} />
             <CustomMessageDialog
                 isVisible={dialog.visible}
                 message={dialog.message}

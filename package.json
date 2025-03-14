@@ -23,7 +23,7 @@
     "@reduxjs/toolkit": "^2.5.0",
     "@types/react-native-snap-carousel": "^3.8.11",
     "axios": "^1.7.9",
-    "expo": "^52.0.37",
+    "expo": "^52.0.38",
     "expo-build-properties": "~0.13.2",
     "expo-image-picker": "^16.0.3",
     "expo-linear-gradient": "~14.0.2",

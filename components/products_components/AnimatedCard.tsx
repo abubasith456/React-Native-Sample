@@ -1,30 +1,67 @@
-// AnimatedCard.tsx
 import React from 'react';
-import { View, Text, Animated, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, Animated, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { GlobalStyle } from '../../constants/styles';
 
-const AnimatedCard = ({ item, index, animationValue, onPressed }: { item: any, index: number, animationValue: Animated.Value, onPressed: any }) => {
+const { width } = Dimensions.get('window');
+const CARD_WIDTH = (width - 36) / 2; // 36 = marginHorizontal(8) * 2 + spacing between cards(20)
+
+interface Product {
+    name: string;
+    price: number;
+    image?: string;
+    images?: string[];
+}
+
+interface AnimatedCardProps {
+    item: Product;
+    index: number;
+    animationValue: Animated.Value;
+    onPressed: (item: Product) => void;
+}
+
+const AnimatedCard: React.FC<AnimatedCardProps> = ({ item, index, animationValue, onPressed }) => {
     const animationStyle = {
+        // opacity: animationValue.interpolate({
+        //     inputRange: [0, 1],
+        //     outputRange: [0, 1],
+        // }),
         transform: [
             {
                 translateY: animationValue.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [60, 0], // Start 50px below and move to 0px
+                    outputRange: [50, 0],
+                }),
+            },
+            {
+                scale: animationValue.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0.8, 1],
                 }),
             },
         ],
     };
 
-    const onCardPressed = () => {
-        onPressed(item);
-    }
-
     return (
         <Animated.View style={[styles.cardContainer, animationStyle]}>
-            <TouchableOpacity style={styles.card} onPress={onCardPressed}>
-                <Image resizeMode="contain" source={{ uri: !item.image ? item.images[0] : item.image }} style={styles.productImage} />
+            <TouchableOpacity
+                style={styles.card}
+                onPress={() => onPressed(item)}
+                activeOpacity={0.7}
+            >
+                <View style={styles.imageContainer}>
+                    <Image
+                        resizeMode="cover"
+                        source={{ uri: !item.image ? item.images?.[0] : item.image }}
+                        style={styles.productImage}
+                    />
+                </View>
                 <View style={styles.textContainer}>
-                    <Text style={styles.productName}>{item.name}</Text>
-                    <Text style={styles.productPrice}>Rs.{item.price}</Text>
+                    <Text numberOfLines={2} style={styles.productName}>
+                        {item.name}
+                    </Text>
+                    <Text style={styles.productPrice}>
+                        Rs. {item.price.toLocaleString()}
+                    </Text>
                 </View>
             </TouchableOpacity>
         </Animated.View>
@@ -33,40 +70,48 @@ const AnimatedCard = ({ item, index, animationValue, onPressed }: { item: any, i
 
 const styles = StyleSheet.create({
     cardContainer: {
-        flex: 1,
+        width: CARD_WIDTH,
         marginHorizontal: 8,
+        marginBottom: 16,
     },
     card: {
         backgroundColor: '#fff',
-        borderRadius: 15,
+        borderRadius: 12,
         overflow: 'hidden',
         shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
         shadowOpacity: 0.1,
-        shadowRadius: 10,
-        elevation: 2,
+        shadowRadius: 8,
+        elevation: 5,
+    },
+    imageContainer: {
+        width: '100%',
+        height: CARD_WIDTH, // Make image container square
+        backgroundColor: '#f8f9fa',
     },
     productImage: {
         width: '100%',
-        height: 150, // Adjust height as needed
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
+        height: '100%',
     },
     textContainer: {
         padding: 12,
-        alignItems: 'center',
     },
     productName: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#2c3e50',
-        marginBottom: 4,
-    },
-    productPrice: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#27ae60',
+        color: '#1a1a1a',
+        lineHeight: 20,
+        marginBottom: 4,
+        flexWrap: 'wrap',
+    },
+    productPrice: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: GlobalStyle.primaryColor,
     },
 });
-
 
 export default AnimatedCard;

@@ -1,11 +1,11 @@
 // ProductsScreen.tsx
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { View, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, FlatList, StyleSheet, ActivityIndicator, Easing } from 'react-native';
 import { RootState, useAppDispatch, useAppSelector } from '../core/state_management/store';
 import { fetchProducts } from '../core/api/ProductRepo';
 import { Animated } from 'react-native';
 import AnimatedCard from '../components/products_components/AnimatedCard';
-import LoadingModal from '../components/base_components/LodingModal';
+import { ShimmerProductCard } from '../components/products_components/ShimmerProductCard';
 
 export const ProductsScreen = ({ route, navigation }: any) => {
     const { productName } = route.params;
@@ -36,6 +36,7 @@ export const ProductsScreen = ({ route, navigation }: any) => {
                 Animated.timing(animationValue, {
                     toValue: 1,
                     duration: 600,
+                    easing: Easing.out(Easing.quad),
                     useNativeDriver: true,
                 }).start();
             });
@@ -46,7 +47,17 @@ export const ProductsScreen = ({ route, navigation }: any) => {
     // If data is loading, show a loading spinner
     if (isLoader) {
         return (
-            <LoadingModal isVisible={isLoader} type='product' />
+            <View style={styles.container}>
+                <FlatList
+                    data={Array(6).fill(0)} // Show 6 shimmer cards
+                    keyExtractor={(_, index) => index.toString()}
+                    renderItem={() => <ShimmerProductCard />}
+                    numColumns={2}
+                    contentContainerStyle={styles.listContainer}
+                    columnWrapperStyle={styles.columnWrapper}
+                    showsVerticalScrollIndicator={false}
+                />
+            </View>
         );
     }
 
@@ -95,10 +106,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 16,
     },
-    loadingContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#f5f6fa',
+    listContainer: {
+        padding: 8,
     },
 });

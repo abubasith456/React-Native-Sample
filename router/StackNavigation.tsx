@@ -11,13 +11,20 @@ import { ProductsScreen } from '../screens/ProductsScreen';
 import OrderHistoryScreen from '../screens/OrderHistoryScreen';
 import { NewHomeScreen } from '../screens/NewHomeScreen';
 import AddressScreen from '../screens/AddressScreen';
+import CustomHeaderWithBack from '../components/base_components/CustomHeaderWithBack';
 
 const Stack = createStackNavigator();
 
 export const StackNagivation = () => {
     return (
         <NavigationContainer >
-            <Stack.Navigator id={undefined} initialRouteName='Splash'>
+            <Stack.Navigator id={undefined} initialRouteName='Splash'
+                screenOptions={{
+                    // header: ({ navigation, route, options }) => (
+                    //     <CustomHeaderWithBack title="Test"
+                    //         onBackPress={() => navigation.goBack()} />
+                    // )
+                }}>
                 <Stack.Screen name='Splash' component={SplashScreen} options={{
                     headerShown: false
                 }} />
@@ -26,7 +33,9 @@ export const StackNagivation = () => {
                 }} />
                 <Stack.Screen name="Search" component={SearchProductsScreen} />
                 <Stack.Screen name='ProductDetails' component={ProductDetailsScreen} />
-                <Stack.Screen name='EditProfile' component={EditProfileScreen} />
+                <Stack.Screen name='EditProfile' component={EditProfileScreen} options={{
+                    headerShown: false
+                }} />
                 <Stack.Screen name='Login' component={LoginScreen} options={{
                     headerShown: false
                 }} />
