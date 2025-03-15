@@ -13,7 +13,7 @@ import { RootState, useAppDispatch, useAppSelector } from "../core/state_managem
 import { useEffect } from "react";
 import { fetchHome, fetchProfile } from "../core/api/UserRepo";
 import { HomeHeader } from "../components/home_components/HomeHeader";
-import { HomeBanner } from "../components/home_components/HomeBanner";
+// import { HomeBanner } from "../components/home_components/HomeBanner";
 import { categoriesData, productsData, recentPurchasesData } from "../constants/ApiSampleResponse";
 import LoadingModal from "../components/base_components/LodingModal";
 import { getUserData } from "../core/local_storage/LocalStorage";
@@ -147,7 +147,7 @@ export const HomeScreen = ({ navigation, route }: any) => {
                         <ShimmerBanner />
                     ) : (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <HomeBanner data={data?.data.banner} />
+                            {/* <HomeBanner data={data?.data.banner} /> */}
                         </View>
                     )}
                     {/* Categories Section */}
