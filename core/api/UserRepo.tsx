@@ -7,7 +7,12 @@ import { APP_NAME } from '../../constants/AppConstants';
 
 const BASE_URL = "https://hayat-shop.onrender.com/api/v1"
 const HF_URL = "https://abubasith86-hayat.hf.space/api/v1"
-const axiosInstance = axios.create({ baseURL: HF_URL })
+const axiosInstance = axios.create({
+    baseURL: HF_URL, headers: {
+        'Content-Type': 'application/json',
+        // Add any other required headers here
+    }
+})
 
 export const login = createAsyncThunk<any, { emailData: string, passwordData: string, googleToken: string | null }>(
     'loginApi',
@@ -36,6 +41,7 @@ export const login = createAsyncThunk<any, { emailData: string, passwordData: st
             console.log("LOGG => ", responseData);
             return responseData;
         } catch (error: any) {
+            console.log("Error: ", error)
             // Check if the error is from Axios
             if (error.response) {
                 // Return the error message or any other data from the response
